@@ -7,25 +7,51 @@ interface Sticker {
 }
 
 const brandMap = {
-  Armbest: {
-    id: 3,
-    category: "WB",
-    company_name: "Armbest",
+  WB: {
+    Armbest: {
+      id: 3,
+      category: "WB",
+      company_name: "Armbest",
+    },
+    Bestshoes: {
+      id: 6,
+      category: "WB",
+      company_name: "Bestshoes",
+    },
+    Best26: {
+      id: 9,
+      category: "WB",
+      company_name: "Best26",
+    },
   },
-  Bestshoes: {
-    id: 6,
-    category: "WB",
-    company_name: "Bestshoes",
-  },
-  Best26: {
-    id: 9,
-    category: "WB",
-    company_name: "Best26",
+  OZON: {
+    Armbest: {
+      id: {
+        key: 12,
+        ClientId: 13,
+      },
+      category: "OZON",
+      company_name: "Armbest",
+    },
+    Bestshoes: {
+      id: {
+        key: 14,
+        ClientId: 15,
+      },
+      category: "OZON",
+      company_name: "Bestshoes",
+    },
   },
 };
 
+
+
 // Функция для получения и сохранения стикеров в PDF
-export default async function getStickerFile(brand: string, ids: number[]) {
+export default async function getStickerFile(
+  brand: string,
+  place: string,
+  ids: number[]
+) {
   try {
     const infoBrand = brandMap[brand];
     const key = await getApiKey(infoBrand);
@@ -101,6 +127,7 @@ export default async function getStickerFile(brand: string, ids: number[]) {
     console.log("PDF успешно скачан.");
   } catch (error) {
     console.error("Ошибка при получении стикеров:", error);
+    return false;
   }
 }
 

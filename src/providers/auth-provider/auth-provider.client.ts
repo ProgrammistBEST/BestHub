@@ -21,17 +21,32 @@ const mockUsers = [
 export const authProviderClient: AuthProvider = {
   login: async ({ email, username, password, remember }) => {
     // Suppose we actually send a request to the back end here.
-    const user = mockUsers[0];
+    // const user = mockUsers[0];
+    const response = await fetch("http://192.168.100.170:2024/api/v1/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (user) {
-      Cookies.set("auth", JSON.stringify(user), {
-        expires: 30, // 30 days
-        path: "/",
-      });
-      return {
-        success: true,
-        redirectTo: "/",
-      };
+    if (response.ok) {
+      const user = await response.json();
+      if (user) {
+        Cookies.set("auth", JSON.stringify(user.rows[0]), {
+          expires: 30,
+          path: "/",
+          secure: true, // Только для HTTPS
+          sameSite: "strict", // Защита от CSRF
+        });
+        return { success: true, redirectTo: "/" };
+      } else {
+        return {
+          success: false,
+          error: {
+            name: "LoginError",
+            message: "Invalid username or password",
+          },
+        };
+      }
     }
 
     return {

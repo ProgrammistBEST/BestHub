@@ -1,40 +1,89 @@
 import React, { useState } from "react";
-import { Box, Button, TextField, Typography, Alert } from "@mui/material";
 import getStickerFile from "../utils/dataProcessor";
-import { Select, MenuItem } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
+import { SnackbarProvider, VariantType, useSnackbar } from "notistack";
 
 // Интерфейс для пропсов (если потребуется расширение)
 interface MainMenuProps {}
 
 const MainMenu: React.FC<MainMenuProps> = () => {
-  // Состояния с правильной типизацией
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>("");
   const [boxNumbers, setBoxNumbers] = useState<string>("");
-  const [Selectedbrand, setSelectedBrand] = useState<string>("");
+  const [selectedBrand, setSelectedBrand] = useState<string | undefined>("");
+  const [selectedPlace, setSelectedPlace] = useState<string | undefined>("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClick = (variant: any, message: string) => {
+    enqueueSnackbar(`${message}.`, { variant });
+  };
   // Обработчик генерации стикеров
   const handleGenerateStickers = async () => {
     try {
-      const cleanedBoxNumbers = boxNumbers.replace(/\s+/g, ""); // Убираем пробелы
-      const ids = cleanedBoxNumbers.match(/.{1,10}/g)?.map(Number) || [];
-      await getStickerFile(Selectedbrand, ids);
+      setIsLoading(true);
       setError(null);
+
+      if (!selectedBrand || !selectedPlace) {
+        setError("Выберите фирму и место");
+        return;
+      }
+      if (!boxNumbers.trim()) {
+        setError("Введите номера заданий");
+        return;
+      }
+      const cleanedBoxNumbers = boxNumbers.replace(/\s+/g, "");
+      const ids = cleanedBoxNumbers.match(/.{1,10}/g)?.map(Number) || [];
+
+      if (ids.length === 0) {
+        setError("Номера заданий введены некорректно");
+        return;
+      }
+
+      const result = await getStickerFile(selectedBrand, selectedPlace, ids);
+      if (result == false) {
+        handleClick("error", "Ошибка при генерации стикеров");
+      }
     } catch (err) {
       setError("Ошибка при генерации стикеров");
+    } finally {
+      setIsLoading(false); // Выключаем режим загрузки
     }
   };
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box
+      sx={{
+        padding: 4,
+        borderRadius: 1,
+        transition: "border-color 0.3s ease",
+      }}
+    >
       {/* Сообщение об ошибке */}
       {error && <Alert severity="error">{error}</Alert>}
 
       {/* Контейнер с кнопками и полями ввода */}
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          marginTop: 3,
+        }}
+      >
         {/* Кнопка обновления базы данных */}
         {/* <Button variant="contained" onClick={handleReloadDb}>
           Обновить базу данных
         </Button> */}
-
         {/* Поле для пути к Excel файлу */}
         {/* <TextField
           label="Путь к Excel файлу"
@@ -44,28 +93,62 @@ const MainMenu: React.FC<MainMenuProps> = () => {
         <Button variant="contained" onClick={handleSelectFile}>
           Выбрать Excel файл
         </Button> */}
+        <div style={{ display: "flex", gap: 20 }}>
+          {/* Первый FormControl */}
+          <FormControl sx={{ minWidth: 150, width: "200px" }}>
+            <InputLabel id="brand-input-label">Фирма</InputLabel>
+            <Select
+              labelId="brand-input-label"
+              value={selectedBrand}
+              label="Фирма"
+              onChange={(e) => setSelectedBrand(e.target.value)}
+            >
+              <MenuItem value="">Выберите фирму</MenuItem>
+              <MenuItem value="Armbest">Armbest</MenuItem>
+              <MenuItem value="Bestshoes">Bestshoes</MenuItem>
+              <MenuItem value="Best26">Best26</MenuItem>
+            </Select>
+          </FormControl>
 
-        <Select
-          value={Selectedbrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-          displayEmpty
-          sx={{ minWidth: 150, width: "200px" }}
-        >
-          <MenuItem value="">Выберите фирму</MenuItem>
-          <MenuItem value="Armbest">Armbest</MenuItem>
-          <MenuItem value="Bestshoes">Bestshoes</MenuItem>
-          <MenuItem value="Best26">Best26</MenuItem>
-        </Select>
-
+          {/* Второй FormControl */}
+          <FormControl sx={{ minWidth: 150, width: "200px" }}>
+            <InputLabel id="place-input-label">Место</InputLabel>
+            <Select
+              labelId="place-input-label"
+              value={selectedPlace}
+              label="Место"
+              onChange={(e) => setSelectedPlace(e.target.value)}
+            >
+              <MenuItem value="">Выберите место</MenuItem>
+              <MenuItem value="WB">WB</MenuItem>
+              <MenuItem value="OZON">OZON</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
         {/* Поле для номеров коробов */}
-        <TextField
-          label="Номера заданий"
-          value={boxNumbers}
-          onChange={(e) => setBoxNumbers(e.target.value)}
-        />
-        <Button variant="contained" onClick={handleGenerateStickers}>
-          Получить стикеры
-        </Button>
+        {selectedBrand && selectedPlace && (
+          <>
+            <TextField
+              label="Номера заданий"
+              value={boxNumbers}
+              onChange={(e) => setBoxNumbers(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={handleGenerateStickers}
+              disabled={isLoading}
+              startIcon={isLoading ? <CircularProgress size={24} /> : null}
+            >
+              {isLoading ? "Генерация..." : "Получить стикеры"}
+            </Button>
+          </>
+        )}
+        {/* Если список пуст */}
+        {(!selectedBrand || !selectedPlace) && (
+          <Alert variant="filled" severity="info">
+            Выберите фирму и место
+          </Alert>
+        )}{" "}
       </Box>
     </Box>
   );

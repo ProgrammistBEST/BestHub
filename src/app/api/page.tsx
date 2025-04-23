@@ -14,7 +14,7 @@ import ApiList from "../../components/apis/apiList";
 
 function ApisPage() {
   return (
-    <Container sx={{ my: 4 }}>
+    <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
       {/* Заголовок */}
       <Typography variant="h4" gutterBottom>
         АПИ
