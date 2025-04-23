@@ -15,7 +15,7 @@ import MainMenu from "../../components/stickers/component/MainMenu";
 const programs = [
   {
     id: 1,
-    name: "Этикетки",
+    name: "Стикеры",
     description: ".",
     component: <Stickers />,
   },
@@ -36,8 +36,7 @@ const programs = [
 function Stickers() {
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h5">Первая программа</Typography>
-      <Typography variant="body1">Этикетки</Typography>
+      <Typography variant="h5">Стикеры</Typography>
       <MainMenu />
     </Box>
   );
@@ -46,8 +45,7 @@ function Stickers() {
 function CostPrice() {
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h5">Вторая программа</Typography>
-      <Typography variant="body1">Себестоимость</Typography>
+      <Typography variant="h5">Себестоимость</Typography>
     </Box>
   );
 }
@@ -55,8 +53,7 @@ function CostPrice() {
 function Promotions() {
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h5">Третья программа</Typography>
-      <Typography variant="body1">Акции</Typography>
+      <Typography variant="h5">Акции</Typography>
     </Box>
   );
 }
@@ -66,7 +63,7 @@ function ProgramPage() {
   const selectedProgram = programs.find((p) => p.id === selectedProgramId);
 
   return (
-    <Container sx={{ my: 4 }}>
+    <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
       {/* Заголовок */}
       <Typography variant="h4" gutterBottom>
         Выберите программу
