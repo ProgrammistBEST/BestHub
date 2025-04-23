@@ -5,7 +5,10 @@ import {
   RefineSnackbarProvider,
   useNotificationProvider,
 } from "@refinedev/mui";
+
 import ComputerRoundedIcon from "@mui/icons-material/ComputerRounded";
+import ApiIcon from "@mui/icons-material/Api";
+
 import routerProvider from "@refinedev/nextjs-router";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -68,9 +71,14 @@ export default function RootLayout({
                       //     },
                       //   },
                       {
-                        name: "programs",
+                        name: "Программы",
                         list: "/programs",
                         icon: <ComputerRoundedIcon />,
+                      },
+                      {
+                        name: "Апи",
+                        list: "/api",
+                        icon: <ApiIcon />,
                       },
                     ]}
                     options={{

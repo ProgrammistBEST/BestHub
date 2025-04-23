@@ -1,5 +1,4 @@
-// src/app/programs/page.tsx
-"use client"; // Для использования клиентских хуков
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -11,6 +10,7 @@ import {
   ToggleButtonGroup,
   ToggleButton,
 } from "@mui/material";
+import MainMenu from "../../components/stickers/component/MainMenu";
 
 const programs = [
   {
@@ -38,6 +38,7 @@ function Stickers() {
     <Box sx={{ textAlign: "center" }}>
       <Typography variant="h5">Первая программа</Typography>
       <Typography variant="body1">Этикетки</Typography>
+      <MainMenu />
     </Box>
   );
 }
