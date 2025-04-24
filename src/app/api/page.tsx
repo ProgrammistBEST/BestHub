@@ -17,7 +17,7 @@ function ApisPage() {
     <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
       {/* Заголовок */}
       <Typography variant="h4" gutterBottom>
-        АПИ
+        API
       </Typography>
       <ApiList />
     </Container>

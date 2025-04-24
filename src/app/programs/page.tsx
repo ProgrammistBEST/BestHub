@@ -98,7 +98,7 @@ function ProgramPage() {
         sx={{ mb: 4, gap: "20px" }}
       >
         {programs.map((program) => (
-          <Card sx={{ Width: "345px" }}>
+          <Card key={program.id} sx={{ Width: "345px" }}>
             <CardActionArea>
               <CardContent>
                 <Typography

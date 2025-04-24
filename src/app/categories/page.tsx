@@ -55,6 +55,7 @@ export default function CategoryList() {
 
   return (
     <List>
+      {/* @ts-ignore */}
       <DataGrid {...dataGridProps} columns={columns} />
     </List>
   );

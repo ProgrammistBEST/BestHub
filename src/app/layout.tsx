@@ -18,6 +18,8 @@ import { AppIcon } from "@components/app-icon";
 import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProviderClient } from "@providers/auth-provider/auth-provider.client";
 import { dataProvider } from "@providers/data-provider";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -76,9 +78,19 @@ export default async function RootLayout({
                         icon: <ComputerRoundedIcon />,
                       },
                       {
-                        name: "Апи",
+                        name: "API",
                         list: "/api",
                         icon: <ApiIcon />,
+                      },
+                      {
+                        name: "Панель администратора",
+                        list: "/dashboard",
+                        icon: <DashboardIcon />,
+                      },
+                      {
+                        name: "Аналитика",
+                        list: "/analytics",
+                        icon: <AnalyticsIcon />,
                       },
                     ]}
                     options={{

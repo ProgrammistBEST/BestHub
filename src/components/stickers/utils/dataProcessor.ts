@@ -44,8 +44,6 @@ const brandMap = {
   },
 };
 
-
-
 // Функция для получения и сохранения стикеров в PDF
 export default async function getStickerFile(
   brand: string,
@@ -53,7 +51,8 @@ export default async function getStickerFile(
   ids: number[]
 ) {
   try {
-    const infoBrand = brandMap[brand];
+    console.log("Проверка: ", brand, place, ids);
+    const infoBrand = brandMap[place][brand];
     const key = await getApiKey(infoBrand);
     const headers = {
       Authorization: key,

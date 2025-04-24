@@ -122,6 +122,7 @@ export default function BlogPostList() {
 
   return (
     <List>
+      {/* @ts-ignore */}
       <DataGrid {...dataGridProps} columns={columns} />
     </List>
   );
