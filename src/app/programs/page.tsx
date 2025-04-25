@@ -83,69 +83,78 @@ function ProgramPage() {
   const selectedProgram = programs.find((p) => p.id === selectedProgramId);
 
   return (
-    <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
-      {/* Заголовок */}
-      <Typography variant="h4" gutterBottom>
-        Выберите программу
-      </Typography>
+    <Box
+      sx={{
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 2,
+      }}
+    >
+      <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
+        {/* Заголовок */}
+        <Typography variant="h4" gutterBottom>
+          Выберите программу
+        </Typography>
 
-      {/* Кнопки выбора программы */}
-      <ToggleButtonGroup
-        value={selectedProgramId}
-        exclusive
-        onChange={(_, newValue) => setSelectedProgramId(newValue)}
-        fullWidth
-        sx={{ mb: 4, gap: "20px" }}
-      >
-        {programs.map((program) => (
-          <Card key={program.id} sx={{ Width: "345px" }}>
-            <CardActionArea>
-              <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                  sx={{ display: "flex", alignItems: "center", gap: "7px" }}
-                >
-                  {program?.image}
-                  {program.name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ color: "text.secondary", height: "40px" }}
-                >
-                  {program.description}
-                </Typography>
-                <ToggleButton
-                  key={program.id}
-                  value={program.id}
-                  sx={{
-                    borderLeft: "1 solid rgba(255, 255, 255, 0.12) !important",
-                  }}
-                >
-                  Войти
-                </ToggleButton>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        ))}
-      </ToggleButtonGroup>
-
-      {/* Плавное отображение выбранной программы */}
-      <Fade in={true} timeout={1500}>
-        <Box
-          sx={{
-            border: "1px solid",
-            borderColor: "divider",
-            borderRadius: 2,
-            p: 3,
-            textAlign: "center",
-          }}
+        {/* Кнопки выбора программы */}
+        <ToggleButtonGroup
+          value={selectedProgramId}
+          exclusive
+          onChange={(_, newValue) => setSelectedProgramId(newValue)}
+          fullWidth
+          sx={{ mb: 4, gap: "20px" }}
         >
-          {selectedProgram?.component}
-        </Box>
-      </Fade>
-    </Container>
+          {programs.map((program) => (
+            <Card key={program.id} sx={{ Width: "345px" }}>
+              <CardActionArea>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    sx={{ display: "flex", alignItems: "center", gap: "7px" }}
+                  >
+                    {program?.image}
+                    {program.name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "text.secondary", height: "40px" }}
+                  >
+                    {program.description}
+                  </Typography>
+                  <ToggleButton
+                    key={program.id}
+                    value={program.id}
+                    sx={{
+                      borderLeft:
+                        "1 solid rgba(255, 255, 255, 0.12) !important",
+                    }}
+                  >
+                    Войти
+                  </ToggleButton>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ))}
+        </ToggleButtonGroup>
+
+        {/* Плавное отображение выбранной программы */}
+        <Fade in={true} timeout={1500}>
+          <Box
+            sx={{
+              border: "1px solid",
+              borderColor: "divider",
+              borderRadius: 2,
+              p: 3,
+              textAlign: "center",
+            }}
+          >
+            {selectedProgram?.component}
+          </Box>
+        </Fade>
+      </Container>
+    </Box>
   );
 }
 
