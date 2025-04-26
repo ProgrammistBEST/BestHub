@@ -2,6 +2,7 @@
 import { Tab, Box, Fade, Tabs, CustomTabPanel } from "@mui/material";
 import React, { useState } from "react";
 import RatingList from "../../components/rating/ratingList";
+import Graphics from "../../components/graphics/graphics";
 
 function a11yProps(index) {
   return {
@@ -48,7 +49,7 @@ function Analytics() {
                 aria-label="basic tabs example"
               >
                 <Tab label="Рейтинг товаров" {...a11yProps(0)} />
-                <Tab label="Что-то ещё" {...a11yProps(1)} />
+                <Tab label="Графики" {...a11yProps(1)} />
                 <Tab label="И ещё что-то" {...a11yProps(2)} />
               </Tabs>
             </Box>
@@ -56,7 +57,7 @@ function Analytics() {
               <RatingList />
             </CustomTabPanel>
             <CustomTabPanel value={category} index={1}>
-              Item Two
+              <Graphics />
             </CustomTabPanel>
             <CustomTabPanel value={category} index={2}>
               Item Three

@@ -16,10 +16,19 @@ import {
   Button,
   Grid,
   Fade,
+  Divider,
+  Chip,
   Backdrop,
 } from "@mui/material";
 import { HamburgerMenu, RefineThemedLayoutV2HeaderProps } from "@refinedev/mui";
 import React, { useContext, useState } from "react";
+import {
+  EmailOutlined,
+  CalendarTodayOutlined,
+  AccessTimeOutlined,
+  BadgeOutlined,
+  AccountCircleOutlined,
+} from "@mui/icons-material";
 
 type IUser = {
   id: number;
@@ -38,14 +47,27 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
     setIsModalOpen(true);
   };
 
-  // Функция для закрытия модального окна
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  // Функция для закрытия модального окна
   const handleEditProfile = () => {
     setIsModalOpen(false);
+  };
+
+  const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+
+    // Получаем день, месяц и год
+    const day = date.getDate();
+    const month = date.toLocaleString("ru", { month: "long" });
+    const year = date.getFullYear();
+
+    // Получаем время (часы и минуты)
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${day} ${month} ${year}, ${hours}:${minutes}`;
   };
 
   return (
@@ -125,7 +147,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               width: "90%", // Занимает 90% ширины экрана на маленьких устройствах
               bgcolor: "background.paper",
               boxShadow: 24,
-              p: 4,
+              p: 2,
               borderRadius: 2,
             }}
           >
@@ -133,20 +155,96 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               Профиль пользователя
             </Typography>
             {user ? (
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={4}>
-                  <Avatar
-                    src={user.avatar}
-                    alt={user.login}
-                    sx={{ width: 56, height: 56 }}
-                  />
+              <Grid container spacing={3} alignItems="center">
+                {/* Аватар */}
+                <Grid item xs={12} sm={4} >
+                  <Box display="flex" justifyContent="center">
+                    <Avatar
+                      src={user.avatar}
+                      alt={user.login}
+                      sx={{
+                        width: 150,
+                        height: 150,
+                        border: "2px solid #e0e0e0",
+                        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      }}
+                    />
+                  </Box>
                 </Grid>
+
+                {/* Информация о пользователе */}
                 <Grid item xs={12} sm={8}>
-                  <Typography variant="body1" fontWeight="bold">
-                    {user.login}
-                  </Typography>
-                  <Typography variant="body2">Почта: {user.email}</Typography>
-                  <Typography variant="body2">Роль: {user.role}</Typography>
+                  <Stack spacing={1}>
+                    {/* Логин */}
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      color="primary"
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
+                      <AccountCircleOutlined sx={{ mr: 1 }} />
+                      {user.login}
+                    </Typography>
+
+                    {/* Почта */}
+                    <Box display="flex" alignItems="center">
+                      <EmailOutlined sx={{ mr: 1, color: "text.secondary" }} />
+                      <Typography variant="body2" color="text.secondary">
+                        {user.email}
+                      </Typography>
+                    </Box>
+
+                    {/* Роль */}
+                    <Box display="flex" alignItems="center">
+                      <BadgeOutlined sx={{ mr: 1, color: "text.secondary" }} />
+                      <Chip
+                        label={user.role}
+                        size="small"
+                        sx={{
+                          backgroundColor: "#f0f8ff",
+                          color: "#007bff",
+                          fontWeight: "bold",
+                        }}
+                      />
+                      {/* Статус */}
+                      <Chip
+                        label={user.status}
+                        size="small"
+                        sx={{
+                          backgroundColor:
+                            user.status === "Активен" ? "#e8f5e9" : "#fff3e0",
+                          color:
+                            user.status === "Активен" ? "#2e7d32" : "#d84315",
+                          fontWeight: "bold",
+                        }}
+                      />
+                    </Box>
+
+                    {/* Последний визит */}
+                    <Box display="flex" alignItems="center">
+                      <AccessTimeOutlined
+                        sx={{ mr: 1, color: "text.secondary" }}
+                      />
+                      <Typography variant="body2" color="text.secondary">
+                        Последний визит: {formatDate(user.last_visit)}
+                      </Typography>
+                    </Box>
+
+                    {/* Дата регистрации */}
+                    <Box display="flex" alignItems="center">
+                      <CalendarTodayOutlined
+                        sx={{ mr: 1, color: "text.secondary" }}
+                      />
+                      <Typography variant="body2" color="text.secondary">
+                        Дата регистрации: {formatDate(user.registration_date)}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Grid>
+
+                {/* Разделитель */}
+                <Grid item xs={12}>
+                  <Divider sx={{ mt: 2, borderColor: "#ddd" }} />
                 </Grid>
               </Grid>
             ) : (

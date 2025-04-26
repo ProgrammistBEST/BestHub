@@ -16,9 +16,16 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import CloseIcon from "@mui/icons-material/Close";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import AppsIcon from "@mui/icons-material/Apps";
+import { Stack } from "@mui/material";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import { styled } from "@mui/material/styles";
 
 const ProductList = ({ products }) => {
   // Состояния
@@ -27,6 +34,8 @@ const ProductList = ({ products }) => {
   const [ratingRange, setRatingRange] = useState([0, 5]);
   const [sortType, setSortType] = useState("rating-desc");
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [alignment, setAlignment] = React.useState("list");
+  const printRef = React.useRef(null);
 
   // Обработчики событий
   const handleSearch = (e) => {
@@ -48,11 +57,13 @@ const ProductList = ({ products }) => {
         product.rating >= range[0] &&
         product.rating <= range[1]
     );
+    filtered.sort((a, b) => b.article - a.article);
     setFilteredProducts(filtered);
   };
 
   const sortProducts = (type) => {
     let sorted = [...filteredProducts];
+
     switch (type) {
       case "rating-desc":
         sorted.sort((a, b) => b.rating - a.rating);
@@ -60,10 +71,8 @@ const ProductList = ({ products }) => {
       case "rating-asc":
         sorted.sort((a, b) => a.rating - b.rating);
         break;
-      case "description-length":
-        sorted.sort((a, b) => a.title.length - b.title.length);
-        break;
       default:
+        sorted.sort((a, b) => b.article - a.article);
         break;
     }
 
@@ -78,10 +87,60 @@ const ProductList = ({ products }) => {
     setSelectedProduct(null);
   };
 
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlignment: string
+  ) => {
+    setAlignment(newAlignment);
+  };
+
+  const control = {
+    value: alignment,
+    onChange: handleChange,
+    exclusive: true,
+  };
+
+  const children = [
+    <ToggleButton value="list" key="list">
+      <FormatListBulletedIcon />
+    </ToggleButton>,
+    <ToggleButton value="card" key="card">
+      <AppsIcon />
+    </ToggleButton>,
+  ];
+
+  const renderToggleButtonGroup = (size) => (
+    <ToggleButtonGroup size={size} {...control} aria-label={`${size} sizes`}>
+      {children}
+    </ToggleButtonGroup>
+  );
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+
+  // Печать определенного блока
+  const handlePrint = () => {
+    const printContents = printRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
+
   return (
     <Box sx={{}}>
       {/* Панель фильтрации и сортировки */}
-      <Box sx={{ display: "flex", gap: 2, mb: 4 }}>
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <TextField
           label="Поиск по модели"
           value={searchTerm}
@@ -92,33 +151,72 @@ const ProductList = ({ products }) => {
           <MenuItem value="rating-desc">Рейтинг (по убыванию)</MenuItem>
           <MenuItem value="rating-asc">Рейтинг (по возрастанию)</MenuItem>
         </Select>
+
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          sx={{ textAlign: "center", pl: "25px" }}
+          onClick={handlePrint}
+          startIcon={<LocalPrintshopIcon />}
+        ></Button>
       </Box>
+      <ToggleButtonGroup
+        sx={{ display: "flex", mb: 2 }}
+        size="small"
+        {...control}
+        aria-label="Small sizes"
+      >
+        {children}
+      </ToggleButtonGroup>
 
       {/* Список товаров */}
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+      <Box
+        sx={{
+          display: alignment === "list" ? "block" : "flex",
+          flexWrap: "wrap",
+          gap: 2,
+        }}
+        ref={printRef}
+      >
         {filteredProducts.length === 0 ? (
-          <Typography>Товары не найдены</Typography>
+          <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+            По вашему запросу ничего не найдено.
+          </Typography>
         ) : (
           filteredProducts.map((product) => (
             <Card
               key={product.id}
               sx={{
-                width: 300,
+                width: alignment === "list" ? "100%" : 300,
+                mb: alignment === "list" ? "" : "block",
+                pl: alignment === "list" ? "10px" : "",
+                p: alignment === "list" ? "" : "",
                 cursor: "pointer",
-                border: "0.1px solid rgba(0, 110, 255, 0.47)",
                 transition: "box-shadow 0.3s",
                 "&:hover": { boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)" },
-                borderRadius: 4,
+                borderRadius: alignment === "list" ? "0" : "4",
+                border:
+                  alignment === "list" ? "1px solid rgba(0, 0, 0, 0.1)" : "",
+                transition: "background 0.1s",
+                "&:hover": { background: " rgba(0, 0, 0, 0.2)" },
               }}
               onClick={() => openModal(product)}
             >
-              <CardContent>
+              <CardContent
+                sx={{
+                  display: alignment === "list" ? "flex" : "block",
+                  p: alignment === "list" ? "5px" : "",
+                  pb: alignment === "list" ? "5px !important" : "",
+                  gap: alignment === "list" ? "10px" : "",
+                }}
+              >
                 <Typography variant="h6">{product.article}</Typography>
-                <Typography variant="overline">
+                <Typography variant="overline" sx={{ fontSize: "12px" }}>
                   Рейтинг: {product.rating}
                 </Typography>
-
-                <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                {/* <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
                   {Array.from({ length: 5 }).map((_, index) => (
                     <>
                       <StarIcon
@@ -129,16 +227,16 @@ const ProductList = ({ products }) => {
                             ? "warning"
                             : index === Math.floor(product.rating) &&
                               product.rating % 1 !== 0
-                            ? "half" // Половинчатая звезда
+                            ? "half"
                             : "disabled"
                         }
                       />
                     </>
                   ))}
-                </Box>
-                <Typography variant="body2" sx={{ mt: 1 }}>
+                </Box> */}
+                {/* <Typography variant="body2" sx={{ mt: 1 }}>
                   {product.title.replace("/", "").slice(0, 50)}...
-                </Typography>
+                </Typography> */}
               </CardContent>
             </Card>
           ))
@@ -160,11 +258,14 @@ const ProductList = ({ products }) => {
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          <Typography variant="h4" sx={{ marginBottom: 2 }}>
-            {selectedProduct?.article}
+          <Typography variant="h4" sx={{ marginBottom: 1 }}>
+            Арт: {selectedProduct?.article}
+            <Typography sx={{ mt: 1 }}>
+              WB ID: {selectedProduct?.nmId}
+            </Typography>
           </Typography>
 
-          <Typography sx={{ marginBottom: 2 }}>
+          <Typography sx={{ marginBottom: 1 }}>
             {selectedProduct?.title.replace("/", "")}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -177,13 +278,6 @@ const ProductList = ({ products }) => {
               />
             ))}
           </Box>
-          {/* <Button
-            variant="contained"
-            sx={{ mt: 2 }}
-            onClick={() => alert("Добавлено в избранное")}
-          >
-            Добавить в избранное
-          </Button> */}
         </DialogContent>
       </Dialog>
     </Box>
