@@ -16,15 +16,6 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 
-const defaultSeries = [
-  { id: "1", data: [4, 5, 1, 2, 3, 3, 2], area: false, stack: "2" },
-  { id: "2", data: [7, 4, 6, 7, 2, 3, 5], area: false, stack: "1" },
-  { id: "3", data: [1, 2, 3, 4, 5, 6, 7], area: false, stack: "3" },
-].map((item, index) => ({
-  ...item,
-  color: mangoFusionPalette("light")[index],
-}));
-
 interface ChipData {
   key: number;
   label: string;
@@ -35,7 +26,6 @@ const ListItem = styled("li")(({ theme }) => ({
 }));
 
 const Graphics = () => {
-  const [series, setSeries] = useState(defaultSeries);
   const [nbSeries, setNbSeries] = useState(3);
   const items = [{ label: "100" }, { label: "200" }];
   const [rating, setRating] = useState([]);
@@ -43,6 +33,7 @@ const Graphics = () => {
   const [error, setError] = useState(null);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [chipData, setChipData] = useState<readonly ChipData[]>([]);
+  const [brand, setBrand] = useState("Armbest");
 
   const handleDelete = (chipToDelete: ChipData) => () => {
     setChipData((chips) =>
@@ -65,25 +56,27 @@ const Graphics = () => {
         }
 
         const response = await axios.get(
-          "http://192.168.100.170:2024/api/v1/rating",
+          "http://192.168.100.170:2024/api/v2/rating",
           {
             params: {
-              company_name: "Armbest",
+              brand: brand,
               place: "WB",
+              startDate: "2025-04-22",
+              endDate: "2025-04-28",
             },
           }
         );
+        console.log(response.data);
         if (response.status !== 200) {
           throw new Error(`Server error: ${response.statusText}`);
         }
 
-        if (!response.data || !Array.isArray(response.data.items)) {
-          throw new Error("Invalid data format");
-        }
+        // if (!response.data || !Array.isArray(response.data.items)) {
+        //   throw new Error("Invalid data format");
+        // }
         const data = response.data;
 
-        setRating(data.items);
-        console.log(data.items);
+        setRating(data);
       } catch (err: any) {
         console.error(err);
         setError(err.message || "An error occurred while fetching APIs");
@@ -96,14 +89,23 @@ const Graphics = () => {
   }, []);
 
   // Формирование данных для графика
+
   const chartData = selectedModels.map((model) => {
-    const modelData = rating.find((item) => item.label === model);
+    const modelRatings = rating.filter((item) => item.article === model);
+    console.log("rating: ", rating);
     return {
       id: model,
-      data: modelData?.data || [],
-      label: model,
+      data: modelRatings.map((item) => Number(item.rating)),
     };
   });
+
+  // Динамический xAxis
+  const xAxisData =
+    chartData.length > 0
+      ? rating
+          .filter((item) => item.article === selectedModels[0])
+          .map((item) => new Date(item.date).toLocaleDateString())
+      : [];
 
   return (
     <>
@@ -128,47 +130,14 @@ const Graphics = () => {
       <Autocomplete
         multiple
         disablePortal
-        options={rating.map((item) => item?.article || item.nmId)}
+        options={Array.from(new Set(rating.map((item) => item.article)))} // Уникальные артикулы
         value={selectedModels}
-        onChange={(event, newValue) => {
-          setSelectedModels(newValue);
-          const newChips = newValue.map((label, index) => ({
-            key: index,
-            label,
-          }));
-          setChipData(newChips);
-        }}
+        onChange={(event, newValue) => setSelectedModels(newValue)}
         sx={{ width: 300 }}
         renderInput={(params) => (
           <TextField {...params} label="Выберите модели" />
         )}
       />
-
-      <Paper
-        sx={{
-          display: "flex",
-          justifyContent: "left",
-          flexWrap: "wrap",
-          listStyle: "none",
-          p: 0.5,
-          m: 0,
-          boxShadow: "none",
-          mt: 1,
-        }}
-        component="ul"
-      >
-        {chipData.map((data) => {
-          return (
-            <ListItem key={data.key}>
-              <Chip
-                label={data.label}
-                onDelete={handleDelete(data)}
-                color="primary"
-              />
-            </ListItem>
-          );
-        })}
-      </Paper>
     </>
   );
 };
