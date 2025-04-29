@@ -8,7 +8,7 @@ import {
   Card,
   CardContent,
   TextField,
-  Slider,
+  Fade,
   Button,
   Select,
   MenuItem,
@@ -172,51 +172,52 @@ const ProductList = ({ products }) => {
       </ToggleButtonGroup>
 
       {/* Список товаров */}
-      <Box
-        sx={{
-          display: alignment === "list" ? "block" : "flex",
-          flexWrap: "wrap",
-          gap: 2,
-        }}
-        ref={printRef}
-      >
-        {filteredProducts.length === 0 ? (
-          <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
-            По вашему запросу ничего не найдено.
-          </Typography>
-        ) : (
-          filteredProducts.map((product) => (
-            <Card
-              key={product.id}
-              sx={{
-                width: alignment === "list" ? "100%" : 300,
-                mb: alignment === "list" ? "" : "block",
-                pl: alignment === "list" ? "10px" : "",
-                p: alignment === "list" ? "" : "",
-                cursor: "pointer",
-                transition: "box-shadow 0.3s",
-                "&:hover": { boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)" },
-                borderRadius: alignment === "list" ? "0" : "4",
-                border:
-                  alignment === "list" ? "1px solid rgba(0, 0, 0, 0.1)" : "",
-                transition: "background 0.1s",
-                "&:hover": { background: " rgba(0, 0, 0, 0.2)" },
-              }}
-              onClick={() => openModal(product)}
-            >
-              <CardContent
+      <Fade in={true} timeout={400}>
+        <Box
+          sx={{
+            display: alignment === "list" ? "block" : "flex",
+            flexWrap: "wrap",
+            gap: 2,
+          }}
+          ref={printRef}
+        >
+          {filteredProducts.length === 0 ? (
+            <Typography variant="h6" sx={{ textAlign: "center", mt: 4 }}>
+              По вашему запросу ничего не найдено.
+            </Typography>
+          ) : (
+            filteredProducts.map((product) => (
+              <Card
+                key={product.id}
                 sx={{
-                  display: alignment === "list" ? "flex" : "block",
-                  p: alignment === "list" ? "5px" : "",
-                  pb: alignment === "list" ? "5px !important" : "",
-                  gap: alignment === "list" ? "10px" : "",
+                  width: alignment === "list" ? "100%" : 300,
+                  mb: alignment === "list" ? "" : "block",
+                  pl: alignment === "list" ? "10px" : "",
+                  p: alignment === "list" ? "" : "",
+                  cursor: "pointer",
+                  transition: "box-shadow 0.3s",
+                  "&:hover": { boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)" },
+                  borderRadius: alignment === "list" ? "0" : "4",
+                  border:
+                    alignment === "list" ? "1px solid rgba(0, 0, 0, 0.1)" : "",
+                  transition: "background 0.1s",
+                  "&:hover": { background: " rgba(0, 0, 0, 0.2)" },
                 }}
+                onClick={() => openModal(product)}
               >
-                <Typography variant="h6">{product.article}</Typography>
-                <Typography variant="overline" sx={{ fontSize: "12px" }}>
-                  Рейтинг: {product.rating}
-                </Typography>
-                {/* <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                <CardContent
+                  sx={{
+                    display: alignment === "list" ? "flex" : "block",
+                    p: alignment === "list" ? "5px" : "",
+                    pb: alignment === "list" ? "5px !important" : "",
+                    gap: alignment === "list" ? "10px" : "",
+                  }}
+                >
+                  <Typography variant="h6">{product.article}</Typography>
+                  <Typography variant="overline" sx={{ fontSize: "12px" }}>
+                    Рейтинг: {product.rating}
+                  </Typography>
+                  {/* <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
                   {Array.from({ length: 5 }).map((_, index) => (
                     <>
                       <StarIcon
@@ -234,14 +235,15 @@ const ProductList = ({ products }) => {
                     </>
                   ))}
                 </Box> */}
-                {/* <Typography variant="body2" sx={{ mt: 1 }}>
+                  {/* <Typography variant="body2" sx={{ mt: 1 }}>
                   {product.title.replace("/", "").slice(0, 50)}...
                 </Typography> */}
-              </CardContent>
-            </Card>
-          ))
-        )}
-      </Box>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </Box>
+      </Fade>
 
       {/* Модальное окно для детального просмотра */}
       <Dialog open={!!selectedProduct} onClose={closeModal}>

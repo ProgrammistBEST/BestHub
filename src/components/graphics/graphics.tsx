@@ -8,7 +8,7 @@ import { mangoFusionPalette } from "@mui/x-charts/colorPalettes";
 import AreaChartIcon from "@mui/icons-material/AreaChart";
 import { useNavigate, useLocation } from "react-router-dom";
 import Link from "next/link";
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Fade } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Chip from "@mui/material/Chip";
@@ -109,35 +109,39 @@ const Graphics = () => {
 
   return (
     <>
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div>
-          {/* График */}
-          {!loading && (
-            <LineChart
-              xAxis={[{ data: Array.from({ length: 7 }, (_, i) => i + 1) }]}
-              series={chartData}
-              height={400}
-            />
-          )}
+      <Fade in={true} timeout={400}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div>
+            {/* График */}
+            {!loading && (
+              <LineChart
+                xAxis={[{ data: Array.from({ length: 7 }, (_, i) => i + 1) }]}
+                series={chartData}
+                height={400}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <Autocomplete
-        multiple
-        disablePortal
-        options={Array.from(new Set(rating.map((item) => item.article)))} // Уникальные артикулы
-        value={selectedModels}
-        onChange={(event, newValue) => setSelectedModels(newValue)}
-        sx={{ width: 300 }}
-        renderInput={(params) => (
-          <TextField {...params} label="Выберите модели" />
-        )}
-      />
+      </Fade>
+      <Fade in={true} timeout={400}>
+        <Autocomplete
+          multiple
+          disablePortal
+          options={Array.from(new Set(rating.map((item) => item.article)))} // Уникальные артикулы
+          value={selectedModels}
+          onChange={(event, newValue) => setSelectedModels(newValue)}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField {...params} label="Выберите модели" />
+          )}
+        />
+      </Fade>
     </>
   );
 };

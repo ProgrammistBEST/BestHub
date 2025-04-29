@@ -8,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { useGetIdentity } from "@refinedev/core";
+
 import {
   Modal,
   Box,
@@ -42,7 +43,6 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   const { mode, setMode } = useContext(ColorModeContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: user } = useGetIdentity<IUser>();
-
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -72,7 +72,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   return (
     <>
-      <AppBar position={sticky ? "sticky" : "relative"}>
+      <AppBar position={sticky ? "sticky" : ""}>
         <Toolbar>
           <Stack
             direction="row"
@@ -157,7 +157,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             {user ? (
               <Grid container spacing={3} alignItems="center">
                 {/* Аватар */}
-                <Grid item xs={12} sm={4} >
+                <Grid item xs={12} sm={4}>
                   <Box display="flex" justifyContent="center">
                     <Avatar
                       src={user.avatar}

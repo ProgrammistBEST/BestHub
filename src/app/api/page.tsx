@@ -14,23 +14,20 @@ import ApiList from "../../components/apis/apiList";
 
 function ApisPage() {
   return (
-    <Box
-      sx={{
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: 2,
-        p: 3,
-        textAlign: "center",
-      }}
-    >
-      <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
-        {/* Заголовок */}
-        <Typography variant="h4" gutterBottom>
-          API
-        </Typography>
-        <ApiList />
-      </Container>
-    </Box>
+    <Fade in={true} timeout={400}>
+      <Box
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 2,
+          textAlign: "center",
+        }}
+      >
+        <Container sx={{ maxWidth: "10000px !important" }}>
+          <ApiList />
+        </Container>
+      </Box>
+    </Fade>
   );
 }
 

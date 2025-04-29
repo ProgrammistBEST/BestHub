@@ -4,13 +4,11 @@ import React, { useState } from "react";
 import {
   Container,
   Typography,
-  Button,
   Box,
   Fade,
   ToggleButtonGroup,
   ToggleButton,
   CardActionArea,
-  CardMedia,
   CardContent,
   Card,
 } from "@mui/material";
@@ -19,7 +17,6 @@ import AssignmentSharpIcon from "@mui/icons-material/AssignmentSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import LoyaltySharpIcon from "@mui/icons-material/LoyaltySharp";
 import HelpOutlineSharpIcon from "@mui/icons-material/HelpOutlineSharp";
-import { TextAlignment } from "pdf-lib";
 
 const programs = [
   {
@@ -83,64 +80,66 @@ function ProgramPage() {
   const selectedProgram = programs.find((p) => p.id === selectedProgramId);
 
   return (
-    <Box
-      sx={{
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: 2,
-      }}
-    >
-      <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
-        {/* Заголовок */}
-        <Typography variant="h4" gutterBottom>
-          Выберите программу
-        </Typography>
+    <Fade in={true} timeout={400}>
+      <Box
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 2,
+        }}
+      >
+        <Container sx={{ my: 4, maxWidth: "10000px !important" }}>
+          {/* Заголовок */}
+          <Typography variant="h4" gutterBottom>
+            Выберите программу
+          </Typography>
 
-        {/* Кнопки выбора программы */}
-        <ToggleButtonGroup
-          value={selectedProgramId}
-          exclusive
-          onChange={(_, newValue) => setSelectedProgramId(newValue)}
-          fullWidth
-          sx={{ mb: 4, gap: "20px" }}
-        >
-          {programs.map((program) => (
-            <Card key={program.id} sx={{ Width: "345px" }}>
-              <CardActionArea>
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    component="div"
-                    sx={{ display: "flex", alignItems: "center", gap: "7px" }}
-                  >
-                    {program?.image}
-                    {program.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: "text.secondary", height: "40px" }}
-                  >
-                    {program.description}
-                  </Typography>
-                  <ToggleButton
-                    key={program.id}
-                    value={program.id}
-                    sx={{
-                      borderLeft:
-                        "1 solid rgba(255, 255, 255, 0.12) !important",
-                    }}
-                  >
-                    Войти
-                  </ToggleButton>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
-        </ToggleButtonGroup>
-
-        {/* Плавное отображение выбранной программы */}
-        <Fade in={true} timeout={1500}>
+          {/* Кнопки выбора программы */}
+          <ToggleButtonGroup
+            value={selectedProgramId}
+            exclusive
+            onChange={(_, newValue) => setSelectedProgramId(newValue)}
+            fullWidth
+            sx={{ mb: 4, gap: "20px" }}
+          >
+            {programs.map((program) => (
+              <Card key={program.id} sx={{ Width: "345px" }}>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "7px",
+                      }}
+                    >
+                      {program?.image}
+                      {program.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary", height: "40px" }}
+                    >
+                      {program.description}
+                    </Typography>
+                    <ToggleButton
+                      key={program.id}
+                      value={program.id}
+                      sx={{
+                        borderLeft:
+                          "1 solid rgba(255, 255, 255, 0.12) !important",
+                      }}
+                    >
+                      Войти
+                    </ToggleButton>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))}
+          </ToggleButtonGroup>
           <Box
             sx={{
               border: "1px solid",
@@ -152,9 +151,9 @@ function ProgramPage() {
           >
             {selectedProgram?.component}
           </Box>
-        </Fade>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+    </Fade>
   );
 }
 

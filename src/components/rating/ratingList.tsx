@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Typography, CircularProgress, Alert } from "@mui/material";
+import { Box, Typography, CircularProgress, Alert, Fade } from "@mui/material";
 import { ApiData } from "../../app/api/types/apiData";
 import ProductList from "./productList";
 
@@ -45,7 +45,9 @@ const RatingList = () => {
         console.error(err);
         setError(err.message || "An error occurred while fetching APIs");
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 400);
       }
     };
 
@@ -56,7 +58,7 @@ const RatingList = () => {
     /* Индикатор загрузки */
   }
   {
-    loading && (
+    loading && error && (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <CircularProgress />
       </Box>
@@ -78,9 +80,11 @@ const RatingList = () => {
     <>
       <Box>
         {loading && (
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-            <CircularProgress />
-          </Box>
+          <Fade in={true} timeout={400}>
+            <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
+              <CircularProgress />
+            </Box>
+          </Fade>
         )}
 
         {error && (

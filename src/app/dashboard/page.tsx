@@ -5,7 +5,7 @@ import React, { useState } from "react";
 function Dashboard() {
   return (
     <>
-      <Fade in={true} timeout={500}>
+      <Fade in={true} timeout={400}>
         <Box
           sx={{
             border: "1px solid",

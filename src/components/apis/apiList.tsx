@@ -105,7 +105,7 @@ const ApiList = () => {
 
   return (
     <>
-      <Box sx={{ padding: 4 }}>
+      <Box sx={{ ml: 0, pt: 3 }}>
         {/* <Typography variant="h4" gutterBottom>
         Список доступных API
       </Typography> */}
