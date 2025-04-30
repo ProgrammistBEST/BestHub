@@ -41,7 +41,7 @@ const ApiList = () => {
 
         let token = localStorage.getItem("token");
         if (!token) {
-          token = "root"; // Временный токен для тестирования
+          token = "root";
         }
 
         const response = await axios.get(
