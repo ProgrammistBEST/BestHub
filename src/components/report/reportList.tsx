@@ -37,7 +37,7 @@ const ReportList = () => {
           <Tab label="Ещё что-то" />
           <Tab label="И ещё что-то" />
         </Tabs>
-        <Box sx={{ p: 3 }}>{value === 0 && <WarehouseRemains />}</Box>
+        <Box sx={{ mt: 2 }}>{value === 0 && <WarehouseRemains />}</Box>
       </Box>
     </>
   );

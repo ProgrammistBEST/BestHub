@@ -10,6 +10,8 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import response from "./warehouse"; // Убедитесь, что файл warehouse.ts существует и экспортирует данные
+import Box from "@mui/material/Box";
+import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
 
 interface WarehouseData {
   nmId: number;
@@ -23,16 +25,15 @@ export default function WarehouseRemains() {
   const [remains, setRemains] = React.useState<WarehouseData[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
-  // Пагинация
-  const [page, setPage] = React.useState(() => {
-    const savedPage = localStorage.getItem("paginationPage");
-    return savedPage ? parseInt(savedPage, 10) : 0;
-  });
-  const [rowsPerPage, setRowsPerPage] = React.useState(() => {
-    const savedRowsPerPage = localStorage.getItem("paginationRowsPerPage");
-    return savedRowsPerPage ? parseInt(savedRowsPerPage, 10) : 25;
-  });
+  // Сортировка
+  const [orderBy, setOrderBy] = React.useState<keyof WarehouseData>("total");
+  const [order, setOrder] = React.useState<"asc" | "desc">("desc");
+
+  // Фильтрация
+  const [filter, setFilter] = React.useState("");
 
   React.useEffect(() => {
     try {
@@ -87,11 +88,31 @@ export default function WarehouseRemains() {
     }
   }, []);
 
-  // Сохраняем состояние пагинации в localStorage
-  React.useEffect(() => {
-    localStorage.setItem("paginationPage", page.toString());
-    localStorage.setItem("paginationRowsPerPage", rowsPerPage.toString());
-  }, [page, rowsPerPage]);
+  // Логика сортировки
+  const handleSort = (property: keyof WarehouseData) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedRemains = React.useMemo(() => {
+    return [...remains].sort((a, b) => {
+      if (order === "asc") {
+        return a[orderBy] > b[orderBy] ? 1 : -1;
+      } else {
+        return a[orderBy] < b[orderBy] ? 1 : -1;
+      }
+    });
+  }, [remains, order, orderBy]);
+
+  // Логика фильтрации
+  const filteredRemains = React.useMemo(() => {
+    return sortedRemains.filter(
+      (item) =>
+        item.vendorCode.includes(filter) ||
+        item.subjectName.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [sortedRemains, filter]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -104,15 +125,41 @@ export default function WarehouseRemains() {
     setPage(0);
   };
 
+  const printRef = React.useRef(null);
+
+  const handlePrint = () => {
+    const printContents = printRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
+
+  if (loading) {
+    return <div>Загрузка...</div>;
+  }
+
+  if (error) {
+    return <div>Произошла ошибка при загрузке данных.</div>;
+  }
+
   return (
     <Paper sx={{ width: "100%" }}>
       <TableContainer
         sx={{ maxHeight: 540, maxWidth: "100%", overflowX: "auto" }}
+        ref={printRef}
       >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ minWidth: 50 }}>Артикул</TableCell>
+              <TableCell
+                sx={{ minWidth: 100 }}
+                onClick={() => handleSort("vendorCode")}
+              >
+                Артикул{" "}
+                {orderBy === "vendorCode" && (order === "asc" ? "↑" : "↓")}
+              </TableCell>
               {Object.keys(remains[0]?.warehouses || {}).map(
                 (warehouseName) => (
                   <TableCell
@@ -123,11 +170,16 @@ export default function WarehouseRemains() {
                   </TableCell>
                 )
               )}
-              <TableCell sx={{ minWidth: 100 }}>Всего</TableCell>
+              <TableCell
+                sx={{ minWidth: 100 }}
+                onClick={() => handleSort("total")}
+              >
+                Всего {orderBy === "total" && (order === "asc" ? "↑" : "↓")}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {remains
+            {filteredRemains
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow
@@ -153,15 +205,44 @@ export default function WarehouseRemains() {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100, 125]}
-        component="div"
-        count={remains.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          p: 1,
+        }}
+      >
+        {/* Поиск */}
+        <TextField
+          label="Поиск"
+          variant="outlined"
+          size="small"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          sx={{ display: "flex" }}
+        />
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          sx={{ textAlign: "center", pl: "25px" }}
+          onClick={handlePrint}
+          startIcon={<LocalPrintshopIcon />}
+        ></Button>
+
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100, 125]}
+          component="div"
+          count={filteredRemains.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{ display: "flex", justifyContent: "spaceBetween" }}
+        />
+      </Box>
     </Paper>
   );
 }

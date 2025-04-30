@@ -67,17 +67,33 @@ const ApiList = () => {
     fetchApis();
   }, []);
 
+  const pluralizeDays = (days: number): string => {
+    if (days === 0) return "Срок истек";
+    if (days === 1) return "день";
+    if (days >= 2 && days <= 4) return "дня";
+    return "дней";
+  };
+
   // Функция для расчета прогресса (сколько осталось до конца)
   const calculateProgress = (expirationDate: string): number => {
     if (!expirationDate) return 0;
+
+    // Текущая дата в миллисекундах
     const now = new Date().getTime();
+
+    // Дата истечения срока в миллисекундах
     const expiration = new Date(expirationDate).getTime();
 
-    const totalDuration = expiration - now;
-    const maxDuration = 120 * 24 * 60 * 60 * 1000;
+    // Разница между датами в миллисекундах
+    const timeDifference = expiration - now;
 
-    if (totalDuration <= 0) return 0; // Срок истек
-    return Math.min(100, (totalDuration / maxDuration) * 100);
+    // Если срок уже истек
+    if (timeDifference <= 0) return 0;
+
+    // Переводим миллисекунды в дни (1 день = 24 часа * 60 минут * 60 секунд * 1000 миллисекунд)
+    const daysLeft = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
+
+    return daysLeft;
   };
 
   // Функция для расчета цвета прогресса
@@ -182,7 +198,12 @@ const ApiList = () => {
                   : "Дата не указана";
                 const progress = calculateProgress(api.expiration_date || "");
                 const progressColor = getProgressColor(progress);
-
+                const progressText =
+                  progress === 0
+                    ? "Срок истек"
+                    : `Осталось времени: ${progress} ${pluralizeDays(
+                        progress
+                      )}`;
                 return (
                   <React.Fragment key={api.id}>
                     <ListItem
@@ -292,7 +313,7 @@ const ApiList = () => {
                             }}
                           >
                             <Typography variant="caption" sx={{ mr: 1 }}>
-                              Осталось времени: {progress.toFixed(0)}%
+                              {progressText}
                             </Typography>
                             <LinearProgress
                               variant="determinate"
