@@ -31,6 +31,8 @@ import {
   AccountCircleOutlined,
 } from "@mui/icons-material";
 
+import ThemeSwitcher from "../../contexts/color-mode/themeSwitcher";
+
 type IUser = {
   id: number;
   name: string;
@@ -257,6 +259,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                 marginTop: 2,
               }}
             >
+              <ThemeSwitcher />
               <Button
                 variant="contained"
                 color="primary"

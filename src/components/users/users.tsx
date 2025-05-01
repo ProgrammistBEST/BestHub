@@ -29,6 +29,7 @@ const users = [
     job: "Программист",
     role: "Admin",
     phone: "+7 952 155 9947",
+    lastActive: "01.05.2025",
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const users = [
     job: "Упаковщик",
     role: "User",
     phone: "+46 8 123 456",
+    lastActive: "01.05.2025",
   },
   {
     id: 3,
@@ -45,38 +47,43 @@ const users = [
     job: "Швея",
     role: "User",
     phone: "+86 10 1234 5678",
+    lastActive: "01.05.2025",
   },
   {
-    id: 3,
+    id: 4,
     name: "Мария",
     status: "Уволен",
     job: "Швея",
     role: "User",
     phone: "+86 10 1234 5678",
+    lastActive: "01.05.2025",
   },
   {
-    id: 3,
+    id: 5,
     name: "Мария",
     status: "Уволен",
     job: "Швея",
     role: "User",
     phone: "+86 10 1234 5678",
+    lastActive: "01.05.2025",
   },
   {
-    id: 3,
+    id: 6,
     name: "Мария",
     status: "Уволен",
     job: "Швея",
     role: "User",
     phone: "+86 10 1234 5678",
+    lastActive: "01.05.2025",
   },
   {
-    id: 3,
+    id: 7,
     name: "Мария",
     status: "Уволен",
     job: "Швея",
     role: "User",
     phone: "+86 10 1234 5678",
+    lastActive: "01.05.2025",
   },
 ];
 
@@ -142,7 +149,8 @@ function Row({ user }: { user: (typeof users)[0] }) {
           <Typography
             variant="body2"
             sx={{
-              color: user.role === "Admin" ? "yellow" : "",
+              color: user.role === "Admin" ? "#d89e00" : "",
+              fontWeight: user.role === "Admin" ? "900" : "100",
             }}
           >
             {user.role}
@@ -151,10 +159,13 @@ function Row({ user }: { user: (typeof users)[0] }) {
         <TableCell align="center">
           <Typography variant="body2">{user.phone}</Typography>
         </TableCell>
+        <TableCell align="center">
+          <Typography variant="body2">{user.lastActive}</Typography>
+        </TableCell>
       </TableRow>
       {/* Развернутая часть строки */}
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 2 }}>
               <Box sx={{ display: "flex", gap: 2 }}>
@@ -207,9 +218,9 @@ export default function UsersTable() {
   });
 
   return (
-    <div>
-      <div style={{ display: "flex" }}>
-        <div>
+    <Typography component="div">
+      <Typography component="div" style={{ display: "flex" }}>
+        <Typography component="div">
           <Autocomplete
             options={optionsName.sort(
               (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
@@ -273,12 +284,19 @@ export default function UsersTable() {
               </li>
             )}
           />
-        </div>
+        </Typography>
         <StepperUserInfo />
         <ImageSlider />
-      </div>
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table" sx={{ borderRadius: "20px" }}>
+      </Typography>
+      <TableContainer
+        component={Paper}
+        sx={{ maxHeight: "575px", overflowY: "auto" }}
+        className="dashboard__User__Table"
+      >
+        <Table
+          aria-label="collapsible table"
+          sx={{ borderRadius: "20px", maxHeight: 400, overflowY: "auto" }}
+        >
           <TableHead>
             <TableRow>
               <TableCell align="center">№</TableCell>
@@ -287,6 +305,7 @@ export default function UsersTable() {
               <TableCell align="center">Статус</TableCell>
               <TableCell align="center">Роль</TableCell>
               <TableCell align="center">Номер</TableCell>
+              <TableCell align="center">Последний визит</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -296,6 +315,6 @@ export default function UsersTable() {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Typography>
   );
 }

@@ -32,7 +32,6 @@ export default function ImageSlider() {
     }, 5000);
     return () => clearInterval(interval);
   }, [maxSteps]);
-  console.log("!");
   return (
     <Box sx={{ maxWidth: "100%", flexGrow: 1, margin: "auto", mb: 2, ml: 2 }}>
       {/* Контейнер для изображений */}
