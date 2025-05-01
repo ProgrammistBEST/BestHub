@@ -10,7 +10,7 @@ export const DevtoolsProvider = (props: React.PropsWithChildren) => {
   return (
     <DevtoolsProviderBase>
       {props.children}
-      <DevtoolsPanel />
+      {/* <DevtoolsPanel /> */}
     </DevtoolsProviderBase>
   );
 };

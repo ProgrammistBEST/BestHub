@@ -34,8 +34,8 @@ export const authProviderClient: AuthProvider = {
         Cookies.set("auth", JSON.stringify(user.rows[0]), {
           expires: 30,
           path: "/",
-          secure: true, // Только для HTTPS
-          sameSite: "strict", // Защита от CSRF
+          //   secure: true, // Только для HTTPS
+          //   sameSite: "strict", // Защита от CSRF
         });
         return { success: true, redirectTo: "/" };
       } else {

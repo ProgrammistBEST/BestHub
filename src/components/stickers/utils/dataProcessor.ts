@@ -23,6 +23,11 @@ const brandMap = {
       category: "WB",
       company_name: "Best26",
     },
+    Arm2: {
+      id: 17,
+      category: "WB",
+      company_name: "Arm2",
+    },
   },
   OZON: {
     Armbest: {

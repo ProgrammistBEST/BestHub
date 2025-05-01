@@ -107,6 +107,7 @@ const MainMenu: React.FC<MainMenuProps> = () => {
               <MenuItem value="Armbest">Armbest</MenuItem>
               <MenuItem value="Bestshoes">Bestshoes</MenuItem>
               <MenuItem value="Best26">Best26</MenuItem>
+              <MenuItem value="Arm2">Arm2</MenuItem>
             </Select>
           </FormControl>
 
