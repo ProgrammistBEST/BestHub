@@ -16,7 +16,7 @@ const images = [
   {
     label: "Image 3",
     imgPath:
-      "https://content-03.wbbasket.ru/74c3f887-b991-4ebd-a94f-561256055be9/8.webp",
+      "https://content-01.wbbasket.ru/a6231f67-ca70-4fd9-bfe3-5357bf6e6472/2.webp",
   },
 ];
 

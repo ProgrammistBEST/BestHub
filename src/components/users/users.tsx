@@ -46,6 +46,38 @@ const users = [
     role: "User",
     phone: "+86 10 1234 5678",
   },
+  {
+    id: 3,
+    name: "Мария",
+    status: "Уволен",
+    job: "Швея",
+    role: "User",
+    phone: "+86 10 1234 5678",
+  },
+  {
+    id: 3,
+    name: "Мария",
+    status: "Уволен",
+    job: "Швея",
+    role: "User",
+    phone: "+86 10 1234 5678",
+  },
+  {
+    id: 3,
+    name: "Мария",
+    status: "Уволен",
+    job: "Швея",
+    role: "User",
+    phone: "+86 10 1234 5678",
+  },
+  {
+    id: 3,
+    name: "Мария",
+    status: "Уволен",
+    job: "Швея",
+    role: "User",
+    phone: "+86 10 1234 5678",
+  },
 ];
 
 const GroupHeader = styled("div")(({ theme }) => ({
