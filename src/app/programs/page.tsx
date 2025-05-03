@@ -17,6 +17,7 @@ import AssignmentSharpIcon from "@mui/icons-material/AssignmentSharp";
 import MonetizationOnSharpIcon from "@mui/icons-material/MonetizationOnSharp";
 import LoyaltySharpIcon from "@mui/icons-material/LoyaltySharp";
 import HelpOutlineSharpIcon from "@mui/icons-material/HelpOutlineSharp";
+import GetBarcodes from "@components/barcodes/barcodes";
 
 const programs = [
   {
@@ -28,9 +29,9 @@ const programs = [
   },
   {
     id: 2,
-    name: "Себестоимость",
-    description: "Программа для получения отчета по себестоимости",
-    component: <CostPrice />,
+    name: "Баркоды",
+    description: "Программа для создания баркодов",
+    component: <Barcodes />,
     image: <MonetizationOnSharpIcon />,
   },
   {
@@ -59,10 +60,11 @@ function Stickers() {
   );
 }
 
-function CostPrice() {
+function Barcodes() {
   return (
     <Box sx={{ textAlign: "center" }}>
-      <Typography variant="h5">Себестоимость</Typography>
+      <Typography variant="h5">Баркоды</Typography>
+      <GetBarcodes />
     </Box>
   );
 }

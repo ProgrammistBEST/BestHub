@@ -1,9 +1,21 @@
 "use client";
-import { Container, Box, Fade, Tabs, Tab, Typography } from "@mui/material";
+import {
+  Container,
+  Box,
+  Fade,
+  Tabs,
+  Tab,
+  Typography,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Select,
+} from "@mui/material";
 import React, { useState } from "react";
 import TabPanel from "@mui/material/TabPanel";
 import Users from "@components/users/users";
 import "./style.css";
+import Database from "../../components/database/database";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -40,10 +52,18 @@ function a11yProps(index: number) {
 
 function Dashboard() {
   const [value, setValue] = React.useState(0);
+  const [selectedDatabase, setSelectedDatabase] = React.useState("WB");
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const handleDatabaseChange = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
+    setSelectedDatabase(event.target.value as string);
+  };
+
   return (
     <>
       <Fade in={true} timeout={400}>
@@ -87,7 +107,7 @@ function Dashboard() {
               index={1}
               className="Dashboard__User__TabPanel"
             >
-              Item Two
+              <Database />
             </TabPanel>
           </Box>
         </Box>
