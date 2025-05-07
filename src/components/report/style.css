@@ -1,0 +1,74 @@
+.MuiTableCell-head,
+.MuiTableCell-body {
+  border: 1px solid #aaa;
+}
+.MuiTableCell-body {
+  font-size: 14px !important;
+}
+.MuiTableCell-head {
+  max-height: 100px;
+}
+
+.groupButtonTable {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: rgb(80, 80, 80) !important;
+  }
+
+  .TableReport,
+  .TableReport * {
+    visibility: visible;
+  }
+
+  .TableReport {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    page-break-inside: avoid;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .MuiTableContainer-root {
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #000 !important;
+  }
+
+  .MuiTable-root {
+    table-layout: fixed;
+    width: 100%;
+    font-size: 10px;
+  }
+
+  .MuiTableCell-head {
+    font-size: 14px;
+    font-weight: bold;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 0;
+    max-width: 150px;
+    border: 1px solid #aaa;
+  }
+
+  .MuiTableCell-body {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid #aaa;
+  }
+  .totalRowTable {
+    background-color: red !important;
+  }
+}

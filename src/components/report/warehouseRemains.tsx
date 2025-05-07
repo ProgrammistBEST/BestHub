@@ -9,16 +9,17 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import response from "./warehouse"; // Убедитесь, что файл warehouse.ts существует и экспортирует данные
 import Box from "@mui/material/Box";
 import LocalPrintshopIcon from "@mui/icons-material/LocalPrintshop";
+import response from "./warehouse"; // Убедитесь, что файл warehouse.ts существует и экспортирует данные
+import "./style.css";
 
 interface WarehouseData {
   nmId: number;
   subjectName: string;
   vendorCode: string;
-  warehouses: Record<string, number>; // Склады и их количества
-  total: number; // Общее количество товаров
+  warehouses: Record<string, number>;
+  total: number;
 }
 
 export default function WarehouseRemains() {
@@ -27,12 +28,8 @@ export default function WarehouseRemains() {
   const [error, setError] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
-
-  // Сортировка
   const [orderBy, setOrderBy] = React.useState<keyof WarehouseData>("total");
   const [order, setOrder] = React.useState<"asc" | "desc">("desc");
-
-  // Фильтрация
   const [filter, setFilter] = React.useState("");
 
   React.useEffect(() => {
@@ -40,7 +37,6 @@ export default function WarehouseRemains() {
       setLoading(true);
       setError(false);
 
-      // Получаем уникальные названия складов
       const uniqueWarehouses = new Set<string>();
       response.forEach((remain) =>
         remain.warehouses.forEach((warehouse) =>
@@ -49,7 +45,6 @@ export default function WarehouseRemains() {
       );
       const warehouseNames = Array.from(uniqueWarehouses);
 
-      // Группируем данные по артикулам
       const items: Record<string, WarehouseData> = {};
       response.forEach((remain) => {
         const vendorCode = remain.vendorCode.split("-")[0];
@@ -62,13 +57,11 @@ export default function WarehouseRemains() {
             total: 0,
           };
 
-          // Инициализируем все склады для данного артикула
           warehouseNames.forEach((warehouseName) => {
             items[vendorCode].warehouses[warehouseName] = 0;
           });
         }
 
-        // Заполняем количество товаров на складах
         remain.warehouses.forEach((warehouse) => {
           items[vendorCode].warehouses[warehouse.warehouseName] +=
             warehouse.quantity;
@@ -76,9 +69,7 @@ export default function WarehouseRemains() {
         });
       });
 
-      // Преобразуем объект в массив
       const result = Object.values(items);
-      console.log("Processed data: ", result);
       setRemains(result);
     } catch (err) {
       setError(true);
@@ -88,7 +79,6 @@ export default function WarehouseRemains() {
     }
   }, []);
 
-  // Логика сортировки
   const handleSort = (property: keyof WarehouseData) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -105,7 +95,6 @@ export default function WarehouseRemains() {
     });
   }, [remains, order, orderBy]);
 
-  // Логика фильтрации
   const filteredRemains = React.useMemo(() => {
     return sortedRemains.filter(
       (item) =>
@@ -128,12 +117,7 @@ export default function WarehouseRemains() {
   const printRef = React.useRef(null);
 
   const handlePrint = () => {
-    const printContents = printRef.current.innerHTML;
-    const originalContents = document.body.innerHTML;
-    document.body.innerHTML = printContents;
     window.print();
-    document.body.innerHTML = originalContents;
-    window.location.reload();
   };
 
   if (loading) {
@@ -145,39 +129,74 @@ export default function WarehouseRemains() {
   }
 
   return (
-    <Paper sx={{ width: "100%" }}>
+    <>
       <TableContainer
-        sx={{ maxHeight: 540, maxWidth: "100%", overflowX: "auto" }}
+        component={Paper}
+        sx={{
+          maxHeight: 540,
+          overflow: "auto",
+          border: "2px solid #000",
+        }}
+        className="TableReport"
         ref={printRef}
       >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow
+              sx={{ backgroundColor: "#c5c5c5", fontSize: "14px !important" }}
+            >
               <TableCell
-                sx={{ minWidth: 100 }}
+                align="center"
                 onClick={() => handleSort("vendorCode")}
+                sx={{
+                  fontSize: "14px",
+                  whiteSpace: "normal",
+                  wordWrap: "break-word",
+                  fontWeight: "bold",
+                  minWidth: 100,
+                  border: "1px solid #aaa",
+                }}
               >
                 Артикул{" "}
                 {orderBy === "vendorCode" && (order === "asc" ? "↑" : "↓")}
               </TableCell>
+
               {Object.keys(remains[0]?.warehouses || {}).map(
                 (warehouseName) => (
                   <TableCell
                     key={warehouseName}
-                    sx={{ minWidth: 20, maxWidth: 120 }}
+                    align="center"
+                    sx={{
+                      fontSize: "14px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: "bold",
+                      minWidth: 80,
+                      border: "1px solid #aaa",
+                    }}
                   >
                     {warehouseName}
                   </TableCell>
                 )
               )}
+
               <TableCell
-                sx={{ minWidth: 100 }}
+                align="center"
                 onClick={() => handleSort("total")}
+                sx={{
+                  fontSize: "14px",
+                  whiteSpace: "normal",
+                  wordWrap: "break-word",
+                  fontWeight: "bold",
+                  minWidth: 80,
+                  border: "1px solid #aaa",
+                }}
               >
                 Всего {orderBy === "total" && (order === "asc" ? "↑" : "↓")}
               </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {filteredRemains
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -191,29 +210,61 @@ export default function WarehouseRemains() {
                     backgroundColor: row.total === 0 ? "#ffcccc" : "inherit",
                   }}
                 >
-                  <TableCell>{row.vendorCode}</TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      fontSize: "10px",
+                      border: "1px solid #aaa",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {row.vendorCode}
+                  </TableCell>
+
                   {Object.keys(row.warehouses).map((warehouseName) => (
-                    <TableCell key={warehouseName}>
+                    <TableCell
+                      key={warehouseName}
+                      align="center"
+                      sx={{
+                        fontSize: "10px",
+                        border: "1px solid #aaa",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
                       {row.warehouses[warehouseName] === 0
                         ? ""
                         : row.warehouses[warehouseName]}
                     </TableCell>
                   ))}
-                  <TableCell>{row.total}</TableCell>
+
+                  <TableCell
+                    align="center"
+                    sx={{
+                      fontSize: "10px",
+                      border: "1px solid #aaa",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {row.total}
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
+
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          p: 1,
+          p: 2,
         }}
       >
-        {/* Поиск */}
+        <Button variant="contained" onClick={handlePrint}>
+          Печать отчета
+        </Button>
+
         <TextField
           label="Поиск"
           variant="outlined"
@@ -222,15 +273,6 @@ export default function WarehouseRemains() {
           onChange={(e) => setFilter(e.target.value)}
           sx={{ display: "flex" }}
         />
-        <Button
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          sx={{ textAlign: "center", pl: "25px" }}
-          onClick={handlePrint}
-          startIcon={<LocalPrintshopIcon />}
-        ></Button>
 
         <TablePagination
           rowsPerPageOptions={[10, 25, 50, 100, 125]}
@@ -243,6 +285,6 @@ export default function WarehouseRemains() {
           sx={{ display: "flex", justifyContent: "spaceBetween" }}
         />
       </Box>
-    </Paper>
+    </>
   );
 }

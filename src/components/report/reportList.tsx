@@ -6,6 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import WarehouseRemains from "./warehouseRemains";
+import CostPriceList from "./costPrice";
 const ReportList = () => {
   const type = "reportList";
   const [loading, setLoading] = useState(true);
@@ -24,21 +25,19 @@ const ReportList = () => {
 
   return (
     <>
-      <Box>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
-          aria-label="scrollable auto tabs example"
-          sx={{ p: 0 }}
-        >
-          <Tab label="Остатки на складе" />
-          <Tab label="Ещё что-то" />
-          <Tab label="И ещё что-то" />
-        </Tabs>
-        <Box sx={{ mt: 2 }}>{value === 0 && <WarehouseRemains />}</Box>
-      </Box>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs example"
+      >
+        <Tab label="Остатки на складе" />
+        <Tab label="Отчет по продажам" />
+        <Tab label="И ещё что-то" />
+      </Tabs>
+      {value === 0 && <WarehouseRemains />}
+      {value === 1 && <CostPriceList />}
     </>
   );
 };
