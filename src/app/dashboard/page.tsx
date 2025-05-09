@@ -16,6 +16,7 @@ import TabPanel from "@mui/material/TabPanel";
 import Users from "@components/users/users";
 import "./style.css";
 import Database from "../../components/database/database";
+import DeviceInventoryManager from "@components/deviceInventoryManager";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -94,6 +95,7 @@ function Dashboard() {
             >
               <Tab label="Пользователи" {...a11yProps(0)} />
               <Tab label="База данных" {...a11yProps(1)} />
+              <Tab label="Учет техн." {...a11yProps(2)} />
             </Tabs>
             <TabPanel
               value={value}
@@ -108,6 +110,13 @@ function Dashboard() {
               className="Dashboard__User__TabPanel"
             >
               <Database />
+            </TabPanel>
+            <TabPanel
+              value={value}
+              index={2}
+              className="Dashboard__User__TabPanel"
+            >
+              <DeviceInventoryManager />
             </TabPanel>
           </Box>
         </Box>
