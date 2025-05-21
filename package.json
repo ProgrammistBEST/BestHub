@@ -29,6 +29,7 @@
     "@refinedev/nestjsx-crud": "^5.0.12",
     "@refinedev/nextjs-router": "^6.2.3",
     "@refinedev/react-hook-form": "^4.9.3",
+    "axios": "^1.9.0",
     "canvas": "^3.1.0",
     "chart.js": "^4.4.9",
     "debounce": "^2.2.0",
