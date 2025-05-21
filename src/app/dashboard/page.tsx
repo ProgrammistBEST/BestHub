@@ -67,7 +67,6 @@ function Dashboard() {
 
   return (
     <>
-      <Fade in={true} timeout={400}>
         <Box
           sx={{
             border: "1px solid",
@@ -94,7 +93,7 @@ function Dashboard() {
               sx={{ borderRight: 1, borderColor: "divider" }}
             >
               <Tab label="Пользователи" {...a11yProps(0)} />
-              <Tab label="База данных" {...a11yProps(1)} />
+              <Tab label="Модели" {...a11yProps(1)} />
               <Tab label="Учет техн." {...a11yProps(2)} />
             </Tabs>
             <TabPanel
@@ -120,7 +119,6 @@ function Dashboard() {
             </TabPanel>
           </Box>
         </Box>
-      </Fade>
     </>
   );
 }
