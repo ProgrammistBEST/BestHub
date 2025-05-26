@@ -2,7 +2,7 @@ import * as React from "react";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 
-export default function PreLoading(props: String) {
+export default function PreLoading(props: any) {
   console.log(props.type);
   if (props.type == "reporstList") {
     return (

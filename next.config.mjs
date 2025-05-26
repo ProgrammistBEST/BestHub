@@ -6,6 +6,7 @@ const nextConfig = {
       bodySizeLimit: "10MB",
     },
   },
+  devIndicators: false,
 };
 
 export default nextConfig;

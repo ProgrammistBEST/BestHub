@@ -235,9 +235,10 @@ export default function UsersTable() {
               <li key={params.key}>
                 <GroupHeader>{params.group}</GroupHeader>
                 <GroupItems>
-                  {params.children.map((child, index) => (
-                    <li key={index}>{child}</li>
-                  ))}
+                  {Array.isArray(params.children) &&
+                    params.children.map((child, index) => (
+                      <li key={index}>{child}</li>
+                    ))}
                 </GroupItems>
               </li>
             )}
@@ -256,9 +257,10 @@ export default function UsersTable() {
               <li key={params.key}>
                 <GroupHeader>{params.group}</GroupHeader>
                 <GroupItems>
-                  {params.children.map((child, index) => (
-                    <li key={index}>{child}</li>
-                  ))}
+                  {Array.isArray(params.children) &&
+                    params.children.map((child, index) => (
+                      <li key={index}>{child}</li>
+                    ))}
                 </GroupItems>
               </li>
             )}
@@ -277,9 +279,10 @@ export default function UsersTable() {
               <li key={params.key}>
                 <GroupHeader>{params.group}</GroupHeader>
                 <GroupItems>
-                  {params.children.map((child, index) => (
-                    <li key={index}>{child}</li>
-                  ))}
+                  {Array.isArray(params.children) &&
+                    params.children.map((child, index) => (
+                      <li key={index}>{child}</li>
+                    ))}
                 </GroupItems>
               </li>
             )}

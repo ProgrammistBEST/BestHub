@@ -336,6 +336,7 @@ export default function DeviceInventoryManager() {
       >
         {/* Фильтр по работнику */}
         <Autocomplete
+          options={[]}
           getOptionLabel={(option) => option.fullName || "Все"}
           renderInput={(params) => (
             <TextField
@@ -350,6 +351,7 @@ export default function DeviceInventoryManager() {
 
         {/* Фильтр по статусу */}
         <Autocomplete
+          options={[]}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -363,6 +365,7 @@ export default function DeviceInventoryManager() {
 
         {/* Фильтр по расположению */}
         <Autocomplete
+          options={[]}
           renderInput={(params) => (
             <TextField
               {...params}

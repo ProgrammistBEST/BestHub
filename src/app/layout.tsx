@@ -5,6 +5,7 @@ import {
   RefineSnackbarProvider,
   useNotificationProvider,
 } from "@refinedev/mui";
+import { Box } from "@mui/material";
 
 import ComputerRoundedIcon from "@mui/icons-material/ComputerRounded";
 import ApiIcon from "@mui/icons-material/Api";
@@ -20,6 +21,7 @@ import { authProviderClient } from "@providers/auth-provider/auth-provider.clien
 import { dataProvider } from "@providers/data-provider";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+import "./style.css";
 
 export const metadata: Metadata = {
   title: "BestHub",
@@ -104,6 +106,16 @@ export default async function RootLayout({
                     {children}
                     <RefineKbar />
                   </Refine>
+                  <Box
+                    className="BrandsTextAnimation"
+                    sx={{
+                      display: "inline",
+                      position: "sticky",
+                      zIndex: 10000,
+                      bottom: "10px",
+                      left: "49px",
+                    }}
+                  ></Box>
                 </DevtoolsProvider>
               </RefineSnackbarProvider>
             </ColorModeContextProvider>

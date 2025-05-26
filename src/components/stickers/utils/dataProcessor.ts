@@ -110,7 +110,7 @@ export default async function getStickerFile(
     }
 
     // Сохранение PDF
-    const pdfBytes = await pdfDoc.save();
+    const pdfBytes: any = await pdfDoc.save();
     console.log("PDF создан.");
 
     // Создание ссылки для скачивания PDF
@@ -135,7 +135,7 @@ export default async function getStickerFile(
   }
 }
 
-async function getApiKey(brand: object) {
+async function getApiKey(brand: any) {
   try {
     const response = await axios.get(
       `http://192.168.100.170:2024/api/v1/api?company_name=${brand.company_name}&id=${brand.id}&category=${brand.category}`

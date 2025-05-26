@@ -1,0 +1,189 @@
+.BrandsTextAnimation {
+
+  font-size: 2vmin;
+  color: rgb(71, 151, 255);
+  text-align: left;
+  font-family: Lato, sans-serif;
+  font-weight: 700;
+}
+
+/* Анимация печатной машинки */
+@keyframes typing {
+  0.0000%,
+  29.3488% {
+    content: "";
+  }
+  1.1395%,
+  26.2093% {
+    content: "A";
+  }
+  2.2791%,
+  25.0698% {
+    content: "Ar";
+  }
+  3.4186%,
+  23.9302% {
+    content: "Arm";
+  }
+  4.5581%,
+  22.7907% {
+    content: "Armb";
+  }
+  5.6977%,
+  21.6512% {
+    content: "Armbe";
+  }
+  6.8372%,
+  20.5116% {
+    content: "Armbes";
+  }
+  7.9767%,
+  19.3721% {
+    content: "Armbest";
+  }
+
+  30.7674%,
+  51.2791% {
+    content: "";
+  }
+  31.9070%,
+  50.1395% {
+    content: "B";
+  }
+  33.0465%,
+  49.0000% {
+    content: "Be";
+  }
+  34.1860%,
+  47.8605% {
+    content: "Bes";
+  }
+  35.3256%,
+  46.7209% {
+    content: "Best";
+  }
+  36.4651%,
+  45.5814% {
+    content: "Best 2";
+  }
+  37.6047%,
+  44.4419% {
+    content: "Best 26";
+  }
+
+  54.6977%,
+  76.2093% {
+    content: "";
+  }
+  55.8372%,
+  74.0698% {
+    content: "B";
+  }
+  56.9767%,
+  72.9302% {
+    content: "Be";
+  }
+  58.1163%,
+  71.7907% {
+    content: "Bes";
+  }
+  59.2558%,
+  70.6512% {
+    content: "Best";
+  }
+  60.3953%,
+  69.5116% {
+    content: "BestS";
+  }
+  61.5349%,
+  68.3721% {
+    content: "BestSh";
+  }
+  62.6744%,
+  67.2326% {
+    content: "BestSho";
+  }
+  63.8140%,
+  66.0930% {
+    content: "BestShoe";
+  }
+  64.9535%,
+  64.9535% {
+    content: "BestShoes";
+  }
+
+  78.6279%,
+  99.8605% {
+    content: "";
+  }
+  79.7674%,
+  95.7209% {
+    content: "A";
+  }
+  80.9070%,
+  94.5814% {
+    content: "Ar";
+  }
+  82.0465%,
+  93.4419% {
+    content: "Arm";
+  }
+  83.1860%,
+  92.3023% {
+    content: "Arm 2";
+  }
+}
+
+/* Анимация мигающего курсора */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.BrandsTextAnimation {
+  --caret: currentcolor;
+}
+
+.BrandsTextAnimation::before {
+  content: "";
+  animation: typing 13.5s infinite;
+}
+
+.BrandsTextAnimation::after {
+  content: "";
+  border-right: 1px solid var(--caret);
+  animation: blink 0.5s linear infinite;
+}
+
+/* Альтернативная анимация для пользователей с ограниченным движением */
+@keyframes sequencePopup {
+  0%,
+  100% {
+    content: "shoes";
+  }
+  25% {
+    content: "company";
+  }
+  50% {
+    content: "people";
+  }
+  75% {
+    content: "";
+  }
+}
+
+@media (prefers-reduced-motion) {
+  .BrandsTextAnimation::after {
+    animation: none;
+  }
+
+  .BrandsTextAnimation::before {
+    content: "shoes";
+    animation: sequencePopup 12s linear infinite;
+  }
+}

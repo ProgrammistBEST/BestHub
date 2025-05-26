@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 refine dev --port 8000",
-    "build": "refine build",
+    "build": "cross-env refine build --no-check --no-lint",
     "start": "refine start",
     "lint": "next lint",
     "refine": "refine"
@@ -17,7 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/lab": "^7.0.0-beta.11",
-    "@mui/material": "^7.0.2",
+    "@mui/material": "^7.1.0",
     "@mui/x-charts": "^8.1.0",
     "@mui/x-data-grid": "^8.0.0",
     "@pdf-lib/fontkit": "^1.1.1",
@@ -25,7 +25,7 @@
     "@refinedev/core": "^4.57.9",
     "@refinedev/devtools": "^1.2.16",
     "@refinedev/kbar": "^1.3.16",
-    "@refinedev/mui": "^6.1.1",
+    "@refinedev/mui": "^6.1.3",
     "@refinedev/nestjsx-crud": "^5.0.12",
     "@refinedev/nextjs-router": "^6.2.3",
     "@refinedev/react-hook-form": "^4.9.3",

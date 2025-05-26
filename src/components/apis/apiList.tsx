@@ -106,7 +106,11 @@ const ApiList = () => {
   const filteredApis =
     apis.length > 0
       ? apis.filter((api) => {
-          const progress = calculateProgress(api.expiration_date || "");
+          const progress = calculateProgress(
+            api.expiration_date instanceof Date
+              ? api.expiration_date.toISOString()
+              : api.expiration_date || ""
+          );
           return (
             (!filters.access_level ||
               api.access_level === filters.access_level) &&
@@ -196,7 +200,11 @@ const ApiList = () => {
                       day: "numeric",
                     })
                   : "Дата не указана";
-                const progress = calculateProgress(api.expiration_date || "");
+                const progress = calculateProgress(
+                  api.expiration_date instanceof Date
+                    ? api.expiration_date.toISOString() // Преобразуем Date в строку
+                    : api.expiration_date || ""
+                );
                 const progressColor = getProgressColor(progress);
                 const progressText =
                   progress === 0

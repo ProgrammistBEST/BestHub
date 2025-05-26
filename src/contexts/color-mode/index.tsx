@@ -146,21 +146,54 @@ export const ColorModeContextProvider: React.FC<
           ? YellowTheme
           : createTheme({
               ...YellowTheme,
-              palette: { ...YellowTheme.palette, mode: "dark" },
+              palette: {
+                ...YellowTheme.palette,
+                mode: "dark",
+                background: {
+                  default: "#121212", // Темный фон
+                  paper: "#1e1e1e", // Фон карточек
+                },
+                text: {
+                  primary: "#ffffff", // Белый текст
+                  secondary: "#b0b0b0", // Серый текст
+                },
+              },
             });
       case "pink":
         return mode === "light"
           ? PinkTheme
           : createTheme({
               ...PinkTheme,
-              palette: { ...PinkTheme.palette, mode: "dark" },
+              palette: {
+                ...PinkTheme.palette,
+                mode: "dark",
+                background: {
+                  default: "#121212",
+                  paper: "#1e1e1e",
+                },
+                text: {
+                  primary: "#ffffff",
+                  secondary: "#b0b0b0",
+                },
+              },
             });
       case "red":
         return mode === "light"
           ? RedTheme
           : createTheme({
               ...RedTheme,
-              palette: { ...RedTheme.palette, mode: "dark" },
+              palette: {
+                ...RedTheme.palette,
+                mode: "dark",
+                background: {
+                  default: "#121212",
+                  paper: "#1e1e1e",
+                },
+                text: {
+                  primary: "#ffffff",
+                  secondary: "#b0b0b0",
+                },
+              },
             });
       default:
         return mode === "light" ? RefineThemes.Blue : RefineThemes.BlueDark;

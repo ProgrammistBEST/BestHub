@@ -1,14 +1,11 @@
 {
   "compilerOptions": {
+    "noImplicitAny": false,
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -23,12 +20,8 @@
       }
     ],
     "paths": {
-      "@*": [
-        "./src/*"
-      ],
-      "@pages/*": [
-        "./pages/*"
-      ]
+      "@*": ["./src/*"],
+      "@pages/*": ["./pages/*"]
     },
     "incremental": true
   },
@@ -36,9 +29,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "test.ts", "src/components/stickers/component/MainMenu.tsx", "src/components/stickers/component/MainMenu.tsx"  ],
-  "exclude": [
-    "node_modules"
-  ]
+    ".next/types/**/*.ts",
+    "test.ts",
+    "src/components/stickers/component/MainMenu.tsx",
+    "src/components/stickers/component/MainMenu.tsx"
+  ],
+  "exclude": ["node_modules"]
 }

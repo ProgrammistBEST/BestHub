@@ -1,5 +1,5 @@
 "use client";
-import { Tab, Box, Fade, Tabs, CustomTabPanel } from "@mui/material";
+import { Tab, Box, Fade, Tabs } from "@mui/material";
 import React, { useState } from "react";
 import RatingList from "../../components/rating/ratingList";
 import Graphics from "../../components/graphics/graphics";
@@ -9,9 +9,10 @@ type IUser = {
   id: number;
   name: string;
   avatar: string;
+  role: string;
 };
 
-function a11yProps(index) {
+function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,

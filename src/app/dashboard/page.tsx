@@ -12,7 +12,6 @@ import {
   Select,
 } from "@mui/material";
 import React, { useState } from "react";
-import TabPanel from "@mui/material/TabPanel";
 import Users from "@components/users/users";
 import "./style.css";
 import Database from "../../components/database/database";
@@ -34,6 +33,7 @@ function TabPanel(props: TabPanelProps) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
+      style={{ width: "100%" }}
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
@@ -100,21 +100,21 @@ function Dashboard() {
             <TabPanel
               value={value}
               index={0}
-              className="Dashboard__User__TabPanel"
+              //   className="Dashboard__User__TabPanel"
             >
               <Users />
             </TabPanel>
             <TabPanel
               value={value}
               index={1}
-              className="Dashboard__User__TabPanel"
+              //   className="Dashboard__User__TabPanel"
             >
               <Database />
             </TabPanel>
             <TabPanel
               value={value}
               index={2}
-              className="Dashboard__User__TabPanel"
+              //   className="Dashboard__User__TabPanel"
             >
               <DeviceInventoryManager />
             </TabPanel>

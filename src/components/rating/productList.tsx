@@ -182,8 +182,8 @@ const ProductList = ({ products }) => {
                   borderRadius: alignment === "list" ? "0" : "4",
                   border:
                     alignment === "list" ? "1px solid rgba(0, 0, 0, 0.1)" : "",
-                  transition: "background 0.1s",
-                  "&:hover": { background: " rgba(0, 0, 0, 0.2)" },
+                  //   transition: "background 0.1s",
+                  //   "&:hover": { background: " rgba(0, 0, 0, 0.2)" },
                 }}
                 onClick={() => openModal(product)}
               >

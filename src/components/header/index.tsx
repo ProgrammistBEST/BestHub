@@ -37,6 +37,12 @@ type IUser = {
   id: number;
   name: string;
   avatar: string;
+  login: string;
+  email: string;
+  role: string;
+  status: string;
+  last_visit: string;
+  registration_date: string;
 };
 
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
@@ -74,7 +80,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
 
   return (
     <>
-      <AppBar position={sticky ? "sticky" : ""}>
+      <AppBar position={sticky ? "sticky" : "static"}>
         <Toolbar>
           <Stack
             direction="row"
@@ -159,7 +165,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             {user ? (
               <Grid container spacing={3} alignItems="center">
                 {/* Аватар */}
-                <Grid item xs={12} sm={4}>
+                <Box>
                   <Box display="flex" justifyContent="center">
                     <Avatar
                       src={user.avatar}
@@ -172,10 +178,10 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                       }}
                     />
                   </Box>
-                </Grid>
+                </Box>
 
                 {/* Информация о пользователе */}
-                <Grid item xs={12} sm={8}>
+                <Box>
                   <Stack spacing={1}>
                     {/* Логин */}
                     <Typography
@@ -242,12 +248,12 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                       </Typography>
                     </Box>
                   </Stack>
-                </Grid>
+                </Box>
 
                 {/* Разделитель */}
-                <Grid item xs={12}>
+                <Box>
                   <Divider sx={{ mt: 2, borderColor: "#ddd" }} />
-                </Grid>
+                </Box>
               </Grid>
             ) : (
               <Typography variant="body1">Загрузка данных...</Typography>
