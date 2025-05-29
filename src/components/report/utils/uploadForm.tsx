@@ -18,16 +18,15 @@ const UploadForm = ({ onUploadSuccess }) => {
   const [datePeriod, setDatePeriod] = useState("");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [variantReport, setVariantReport] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formData = new FormData();
-
     formData.append("brand", brand);
     formData.append("datePeriod", datePeriod);
     if (file) formData.append("file", file);
-
-    setLoading(true);
     try {
       const result = await uploadReport(formData);
       if (result?.success) {
@@ -38,6 +37,10 @@ const UploadForm = ({ onUploadSuccess }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const variantReportHandle = (type: string) => {
+    setVariantReport(type);
   };
 
   const handleFileChange = (e) => {
@@ -119,7 +122,7 @@ const UploadForm = ({ onUploadSuccess }) => {
         disabled={loading}
         startIcon={loading && <CircularProgress size={20} />}
       >
-        {loading ? "Загрузка..." : "Получить отчёт"}
+        {loading ? "Загрузка..." : "Получить отчёт по файлу"}
       </Button>
     </Box>
   );

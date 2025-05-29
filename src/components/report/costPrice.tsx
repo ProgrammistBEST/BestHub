@@ -29,7 +29,7 @@ export default function CostPriceList() {
   });
 
   const totals = useMemo(() => {
-    if (!reportData || !Array.isArray(reportData)) return {};
+    if (reportData == null || !reportData.rows) return {};
 
     const totals = {
       soldUnits: 0,
@@ -42,7 +42,7 @@ export default function CostPriceList() {
       finalProfit: 0,
     };
 
-    reportData.forEach((item) => {
+    reportData.rows.forEach((item) => {
       totals.soldUnits += item.soldUnits || 0;
       totals.costOfSales += item.costOfSales || 0;
       totals.returnsUnits += item.returnsUnits || 0;
@@ -55,12 +55,12 @@ export default function CostPriceList() {
 
     return totals;
   }, [reportData]);
+  console.log("reportData: ", reportData);
 
   const sortedData = useMemo(() => {
-    if (!reportData || !Array.isArray(reportData)) return [];
-    console.log(sortedData);
+    if (!reportData?.rows || !Array.isArray(reportData.rows)) return [];
 
-    const data = [...reportData];
+    const data = [...reportData.rows];
     if (sortConfig.key) {
       data.sort((a, b) => {
         const aVal = a[sortConfig.key];
@@ -75,10 +75,8 @@ export default function CostPriceList() {
   }, [reportData, sortConfig]);
 
   const requestSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
+    const direction =
+      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
     setSortConfig({ key, direction });
   };
 
@@ -89,6 +87,7 @@ export default function CostPriceList() {
   const handleUploadSuccess = (data) => {
     setReportData(data);
   };
+
   return (
     <>
       <div style={{ display: "flex", maxWidth: "85%" }}>
@@ -106,7 +105,7 @@ export default function CostPriceList() {
         sx={{
           maxHeight: 540,
           overflow: "auto",
-          border: "2px solid #000",
+          m: 2,
         }}
         className="TableReport"
       >
@@ -179,8 +178,8 @@ export default function CostPriceList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedData.map((row, index) => (
-              <TableRow key={index}>
+            {sortedData.map((row) => (
+              <TableRow key={row.id}>
                 <TableCell>{row.label}</TableCell>
                 <TableCell align="right">{row.sold}</TableCell>
                 <TableCell align="right">
@@ -198,7 +197,7 @@ export default function CostPriceList() {
                 </TableCell>
                 <TableCell align="right">{row.tax?.toLocaleString()}</TableCell>
                 <TableCell align="right">
-                  {row.finalProfit?.toLocaleString()}
+                  {row.fullpriceFinish?.toLocaleString()}
                 </TableCell>
               </TableRow>
             ))}
@@ -225,7 +224,7 @@ export default function CostPriceList() {
                 {reportData?.totals.sumReturnPrice?.toLocaleString()}
               </TableCell>
               <TableCell align="right">
-                {reportData?.totals.sumReturnPrice?.toLocaleString()}
+                {reportData?.totals.soldMinusReturnPrice?.toLocaleString()}
               </TableCell>
               <TableCell align="right">
                 {reportData?.totals.sumCashTransfer?.toLocaleString()}

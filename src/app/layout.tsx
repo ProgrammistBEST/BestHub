@@ -21,6 +21,11 @@ import { authProviderClient } from "@providers/auth-provider/auth-provider.clien
 import { dataProvider } from "@providers/data-provider";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import HelpIcon from "@mui/icons-material/Help";
+import SettingsIcon from "@mui/icons-material/Settings";
+
 import "./style.css";
 
 export const metadata: Metadata = {
@@ -93,6 +98,26 @@ export default async function RootLayout({
                         name: "Аналитика",
                         list: "/analytics",
                         icon: <AnalyticsIcon />,
+                      },
+                      {
+                        name: "Задачи",
+                        list: "/analytics",
+                        icon: <TaskAltIcon />,
+                      },
+                      {
+                        name: "История",
+                        list: "/analytics",
+                        icon: <ManageSearchIcon />,
+                      },
+                      {
+                        name: "Поддержка",
+                        list: "/analytics",
+                        icon: <HelpIcon />,
+                      },
+                      {
+                        name: "Настройки ",
+                        list: "/analytics",
+                        icon: <SettingsIcon />,
                       },
                     ]}
                     options={{
