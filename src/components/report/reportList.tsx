@@ -28,6 +28,7 @@ const ReportList = () => {
       </Tabs>
       {value === 0 && <WarehouseRemains />}
       {value === 1 && <CostPriceList />}
+      {value === 2 && <CostPriceList />}
     </>
   );
 };

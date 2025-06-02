@@ -5,7 +5,7 @@ import {
   RefineSnackbarProvider,
   useNotificationProvider,
 } from "@refinedev/mui";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import ComputerRoundedIcon from "@mui/icons-material/ComputerRounded";
 import ApiIcon from "@mui/icons-material/Api";
@@ -119,6 +119,11 @@ export default async function RootLayout({
                         list: "/analytics",
                         icon: <SettingsIcon />,
                       },
+                      {
+                        name: "Программы",
+                        list: "/programs",
+                        icon: <ComputerRoundedIcon />,
+                      },
                     ]}
                     options={{
                       syncWithLocation: true,
@@ -131,7 +136,7 @@ export default async function RootLayout({
                     {children}
                     <RefineKbar />
                   </Refine>
-                  <Box
+                  <Typography
                     className="BrandsTextAnimation"
                     sx={{
                       display: "inline",
@@ -140,7 +145,7 @@ export default async function RootLayout({
                       bottom: "10px",
                       left: "49px",
                     }}
-                  ></Box>
+                  ></Typography>
                 </DevtoolsProvider>
               </RefineSnackbarProvider>
             </ColorModeContextProvider>
