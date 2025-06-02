@@ -88,6 +88,7 @@ function ProgramPage() {
           border: "1px solid",
           borderColor: "divider",
           borderRadius: 2,
+          minHeight: "85vh",
         }}
       >
         <Container sx={{ my: 4, maxWidth: "10000px !important" }}>

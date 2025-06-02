@@ -21,6 +21,7 @@ function ApisPage() {
           borderColor: "divider",
           borderRadius: 2,
           textAlign: "center",
+          minHeight: "85vh",
         }}
       >
         <Container sx={{ maxWidth: "10000px !important" }}>

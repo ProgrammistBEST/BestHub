@@ -16,9 +16,11 @@ import { uploadReport } from "./api";
 const UploadForm = ({ onUploadSuccess }) => {
   const [brand, setBrand] = useState("BEST SHOES");
   const [datePeriod, setDatePeriod] = useState("");
+  const [summForTax1, setSummForTax1] = useState(0);
+  const [summForTax2, setSummForTax2] = useState(0);
+
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [variantReport, setVariantReport] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +28,11 @@ const UploadForm = ({ onUploadSuccess }) => {
     const formData = new FormData();
     formData.append("brand", brand);
     formData.append("datePeriod", datePeriod);
+    formData.append("summForTax1", summForTax1);
+    formData.append("summForTax2", summForTax2);
+
     if (file) formData.append("file", file);
+
     try {
       const result = await uploadReport(formData);
       if (result?.success) {
@@ -39,8 +45,28 @@ const UploadForm = ({ onUploadSuccess }) => {
     }
   };
 
-  const variantReportHandle = (type: string) => {
-    setVariantReport(type);
+  // Функция для форматирования числа
+  const formatNumber = (value) => {
+    return value
+      .replace(/\s/g, "")
+      .replace(/[^0-9]/g, "")
+      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  };
+
+  const handleInputChange1 = (e) => {
+    const rawValue = e.target.value; // Исходное значение из поля ввода
+    const formattedValue = formatNumber(rawValue); // Форматированное значение
+
+    // Обновляем состояние
+    setSummForTax1(formattedValue);
+  };
+
+  const handleInputChange2 = (e) => {
+    const rawValue = e.target.value; // Исходное значение из поля ввода
+    const formattedValue = formatNumber(rawValue); // Форматированное значение
+
+    // Обновляем состояние
+    setSummForTax2(formattedValue);
   };
 
   const handleFileChange = (e) => {
@@ -110,6 +136,28 @@ const UploadForm = ({ onUploadSuccess }) => {
         onChange={(e) => setDatePeriod(e.target.value)}
         disabled={loading}
         helperText="Например: Январь 2025"
+        required
+      />
+
+      {/* Налог 1 */}
+      <TextField
+        label="Общая сумма отчёта"
+        variant="outlined"
+        value={summForTax1}
+        onChange={handleInputChange1}
+        disabled={loading}
+        helperText="Например: 60 000"
+        required
+      />
+
+      {/* Налог 2 */}
+      <TextField
+        label="Дополнительная сумма отчёта"
+        variant="outlined"
+        value={summForTax2}
+        onChange={handleInputChange2}
+        disabled={loading}
+        helperText="Например: 60 000"
         required
       />
 

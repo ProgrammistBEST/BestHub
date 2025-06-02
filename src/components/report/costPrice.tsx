@@ -55,7 +55,6 @@ export default function CostPriceList() {
 
     return totals;
   }, [reportData]);
-  console.log("reportData: ", reportData);
 
   const sortedData = useMemo(() => {
     if (!reportData?.rows || !Array.isArray(reportData.rows)) return [];
@@ -152,29 +151,29 @@ export default function CostPriceList() {
                 align="center"
                 onClick={() => requestSort("residualCost")}
               >
-                Себест.
+                Продажи - возвраты
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 sx={{ fontWeight: "bold" }}
                 align="center"
                 onClick={() => requestSort("toTransfer")}
               >
                 К перечисл.
-              </TableCell>
-              <TableCell
+              </TableCell> */}
+              {/* <TableCell
                 sx={{ fontWeight: "bold" }}
                 align="center"
                 onClick={() => requestSort("tax7Percent")}
               >
                 Налог 7%
-              </TableCell>
-              <TableCell
+              </TableCell> */}
+              {/* <TableCell
                 sx={{ fontWeight: "bold" }}
                 align="center"
                 onClick={() => requestSort("finalProfit")}
               >
                 Прибыль оконч.
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -192,13 +191,13 @@ export default function CostPriceList() {
                 <TableCell align="right">
                   {row.profit?.toLocaleString()}
                 </TableCell>
-                <TableCell align="right">
+                {/* <TableCell align="right">
                   {row.cashTransfer?.toLocaleString()}
                 </TableCell>
                 <TableCell align="right">{row.tax?.toLocaleString()}</TableCell>
                 <TableCell align="right">
                   {row.fullpriceFinish?.toLocaleString()}
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
             {/* Итоговая строка */}
@@ -226,7 +225,7 @@ export default function CostPriceList() {
               <TableCell align="right">
                 {reportData?.totals.soldMinusReturnPrice?.toLocaleString()}
               </TableCell>
-              <TableCell align="right">
+              {/* <TableCell align="right">
                 {reportData?.totals.sumCashTransfer?.toLocaleString()}
               </TableCell>
               <TableCell align="right">
@@ -234,7 +233,7 @@ export default function CostPriceList() {
               </TableCell>
               <TableCell align="right">
                 {reportData?.totals.sumFinalProfit?.toLocaleString()}
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableBody>
         </Table>

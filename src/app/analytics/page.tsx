@@ -48,6 +48,7 @@ function Analytics() {
             border: "1px solid",
             borderColor: "divider",
             borderRadius: 2,
+            minHeight: "85vh",
           }}
         >
           <Fade in={true} timeout={500}>
