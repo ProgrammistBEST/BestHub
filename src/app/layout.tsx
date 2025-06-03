@@ -25,7 +25,6 @@ import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import ManageSearchIcon from "@mui/icons-material/ManageSearch";
 import HelpIcon from "@mui/icons-material/Help";
 import SettingsIcon from "@mui/icons-material/Settings";
-
 import "./style.css";
 
 export const metadata: Metadata = {
@@ -101,28 +100,23 @@ export default async function RootLayout({
                       },
                       {
                         name: "Задачи",
-                        list: "/analytics",
+                        list: "/tasks",
                         icon: <TaskAltIcon />,
                       },
                       {
                         name: "История",
-                        list: "/analytics",
+                        list: "/history",
                         icon: <ManageSearchIcon />,
                       },
                       {
                         name: "Поддержка",
-                        list: "/analytics",
+                        list: "/helper",
                         icon: <HelpIcon />,
                       },
                       {
                         name: "Настройки ",
-                        list: "/analytics",
+                        list: "/settings",
                         icon: <SettingsIcon />,
-                      },
-                      {
-                        name: "Программы",
-                        list: "/programs",
-                        icon: <ComputerRoundedIcon />,
                       },
                     ]}
                     options={{

@@ -14,6 +14,21 @@
   justify-content: space-between;
 }
 
+.boxDataPenalty {
+  border-top: 2px solid rgba(153, 153, 153, 0.521);
+
+  margin: 0;
+}
+.countDataPenalty {
+  margin: 0;
+}
+.keyDataPenalty {
+  margin: 0;
+}
+.titleDataPenalty {
+  margin: 0;
+}
+
 @media print {
   body * {
     visibility: hidden;

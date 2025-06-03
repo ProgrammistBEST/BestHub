@@ -24,11 +24,11 @@ const ReportList = () => {
       >
         <Tab label="Остатки на складе" />
         <Tab label="Отчет по продажам" />
-        <Tab label="И ещё что-то" />
+        {/* <Tab label="И ещё что-то" /> */}
       </Tabs>
       {value === 0 && <WarehouseRemains />}
       {value === 1 && <CostPriceList />}
-      {value === 2 && <CostPriceList />}
+      {/* {value === 2 && <CostPriceList />} */}
     </>
   );
 };

@@ -28,8 +28,8 @@ const UploadForm = ({ onUploadSuccess }) => {
     const formData = new FormData();
     formData.append("brand", brand);
     formData.append("datePeriod", datePeriod);
-    formData.append("summForTax1", summForTax1);
-    formData.append("summForTax2", summForTax2);
+    // formData.append("summForTax1", summForTax1);
+    // formData.append("summForTax2", summForTax2);
 
     if (file) formData.append("file", file);
 

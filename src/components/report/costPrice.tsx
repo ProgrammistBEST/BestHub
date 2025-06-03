@@ -9,6 +9,7 @@ import {
   Paper,
   IconButton,
   Button,
+  Box,
   Stack,
 } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
@@ -53,6 +54,7 @@ export default function CostPriceList() {
       totals.finalProfit += item.finalProfit || 0;
     });
 
+    console.log("reportData: ", reportData);
     return totals;
   }, [reportData]);
 
@@ -238,6 +240,35 @@ export default function CostPriceList() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Box
+        sx={{
+          flexGrow: 1,
+          bgcolor: "background.paper",
+          height: "100%",
+          borderRadius: 2,
+          p: 2,
+        }}
+      >
+        {Object.entries(reportData?.additional || {}).map(
+          ([penaltyKey, data]) => (
+            <div key={penaltyKey} className="boxDataPenalty">
+              <h3 className="keyDataPenalty">{penaltyKey}</h3>
+              <p className="countDataPenalty">Количество: {data.count}</p>
+              <p className="titleDataPenalty">
+                Всего: {data.sumTypeLogisticPenalty}
+              </p>
+
+              {/* <ul>
+                {data.items.map((item, index) => (
+                  <li key={index}>
+                    {item.value} — штраф: {item.typeLogisticPenalty}
+                  </li>
+                ))}
+              </ul> */}
+            </div>
+          )
+        )}
+      </Box>
       <Stack
         spacing={2}
         direction="row"
