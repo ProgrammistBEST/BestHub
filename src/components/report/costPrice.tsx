@@ -100,18 +100,16 @@ export default function CostPriceList() {
           </>
         )}
       </div>
-
       <TableContainer
         component={Paper}
         sx={{
           maxHeight: 540,
-          overflow: "auto",
-          m: 2,
+          p: 2,
         }}
         className="TableReport"
       >
-        <Table aria-label="sales table" stickyHeader>
-          <TableHead sx={{ backgroundColor: "#c5c5c5" }}>
+        <Table aria-label="sales table">
+          <TableHead sx={{ backgroundColor: "#dddddd" }}>
             <TableRow>
               <TableCell
                 align="center"
@@ -239,36 +237,40 @@ export default function CostPriceList() {
             </TableRow>
           </TableBody>
         </Table>
-      </TableContainer>
-      <Box
-        sx={{
-          flexGrow: 1,
-          bgcolor: "background.paper",
-          height: "100%",
-          borderRadius: 2,
-          p: 2,
-        }}
-      >
-        {Object.entries(reportData?.additional || {}).map(
-          ([penaltyKey, data]) => (
-            <div key={penaltyKey} className="boxDataPenalty">
-              <h3 className="keyDataPenalty">{penaltyKey}</h3>
-              <p className="countDataPenalty">Количество: {data.count}</p>
-              <p className="titleDataPenalty">
-                Всего: {data.sumTypeLogisticPenalty}
-              </p>
+        <Box
+          sx={{
+            flexGrow: 1,
+            bgcolor: "background.paper",
+            height: "100%",
+            borderRadius: 2,
+            p: 2,
+          }}
+        >
+          {Object.entries(reportData?.additional || {})
+            .filter(([_, data]) => data.sumTypeLogisticPenalty > 0)
+            .map(([penaltyKey, data]) => (
+              <div key={penaltyKey} className="boxDataPenalty">
+                <h3 className="keyDataPenalty">{penaltyKey}</h3>
+                {/* <p className="countDataPenalty">Кол-во: {data.count}</p> */}
+                <p className="titleDataPenalty">
+                  Всего: {data.sumTypeLogisticPenalty}
+                </p>
 
-              {/* <ul>
+                {/* <ul>
                 {data.items.map((item, index) => (
                   <li key={index}>
                     {item.value} — штраф: {item.typeLogisticPenalty}
                   </li>
                 ))}
               </ul> */}
-            </div>
-          )
-        )}
-      </Box>
+              </div>
+            ))}
+          <div className="boxDataPenalty">
+            <h3 className="keyDataPenalty">Налог</h3>
+            <p className="titleDataPenalty">Всего: 123 200 руб.</p>
+          </div>
+        </Box>
+      </TableContainer>
       <Stack
         spacing={2}
         direction="row"

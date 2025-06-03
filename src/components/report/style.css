@@ -15,9 +15,16 @@
 }
 
 .boxDataPenalty {
+  transition: 0.1s;
   border-top: 2px solid rgba(153, 153, 153, 0.521);
-
   margin: 0;
+  padding: 4px;
+}
+.boxDataPenalty:hover {
+  transform: translateX(15px);
+  cursor: pointer;
+  transition: 0.1s;
+  background-color: rgb(221, 221, 221);
 }
 .countDataPenalty {
   margin: 0;
