@@ -38,11 +38,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "test.ts",
-    "src/components/stickers/component/MainMenu.tsx",
-    "src/components/stickers/component/MainMenu.tsx"
-  ],
+    ".next/types/**/*.ts"
+, "test.ts", "src/components/stickers/component/MainMenu.tsx", "src/components/stickers/component/MainMenu.tsx", "src/hooks/useCreateData.ts"  ],
   "exclude": [
     "node_modules"
   ]

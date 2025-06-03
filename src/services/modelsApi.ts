@@ -1,4 +1,4 @@
-import { apiClient } from './api';
+import { apiClient } from './apiService';
 
 export const createModel = async (data) => {
   const response = await apiClient.post('/api/models', data);

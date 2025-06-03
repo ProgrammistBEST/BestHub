@@ -14,11 +14,11 @@ import {
   FormControlLabel,
   Grid,
   Typography,
-  Toolbar,
+  Toolbar
 } from "@mui/material";
 import axios from "axios";
 
-// Компонент получения данных по api
+// Компонент получения данных по API
 const EnhancedTableToolbar = ({ onSearch }) => {
   return (
     <Toolbar
@@ -30,7 +30,6 @@ const EnhancedTableToolbar = ({ onSearch }) => {
         gap: 2,
       }}
     >
-      {/* Кнопка WB */}
       <Button
         variant="contained"
         sx={{
@@ -47,10 +46,10 @@ const EnhancedTableToolbar = ({ onSearch }) => {
   );
 };
 
-export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
+const CreateModel  = ({ isOpen, onClose, onAdd }) => {
   const [formData, setFormData] = useState({
     brand: "",
-    platform: "BestHub", // По умолчанию BestHub
+    platform: "BestHub",
     article: "",
     sku: "",
     sizes: [],
@@ -59,11 +58,10 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
     gender: "",
     color: "",
   });
-
+  
   const [sizesList, setSizesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
 
-  // Получение размеров
   useEffect(() => {
     const fetchSizes = async () => {
       try {
@@ -76,16 +74,15 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
     fetchSizes();
   }, []);
 
-  // Получение брендов
   useEffect(() => {
     const fetchBrands = async () => {
-      try{
+      try {
         const response = await axios.get("http://localhost:8001/api/brands");
         setBrandsList(response.data);
-      } catch {
-  
+      } catch (error) {
+        console.error("Ошибка при загрузке брендов:", error);
       }
-    }
+    };
     fetchBrands();
   }, []);
 
@@ -113,13 +110,9 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>Добавить модель</DialogTitle>
-      <DialogContent>
-        {/* Основной контейнер */}
         <Grid container spacing={2}>
           {/* Бренд и платформа */}
-          <Grid item xs={12} className="container-full-width">
+          <Grid item xs={12}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <FormControl fullWidth margin="normal">
@@ -128,7 +121,7 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
                     name="brand"
                     value={formData.brand}
                     onChange={handleChange}
-                    sx={{ minWidth: '150px' }} // Установите значение, достаточное для отображения 8 символов
+                    sx={{ minWidth: '150px' }}
                   >
                     {brandsList.map((brand) => (
                       <MenuItem key={brand.brad_id} value={brand.brand}>
@@ -153,10 +146,9 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
               </Grid>
             </Grid>
           </Grid>
-          
-          {/* Артикулов */}
-          <Grid item xs={12} className="container-full-width">
-            <Typography variant="subtitle1">Артикулы</Typography>
+
+          {/* Артикулы */}
+          <Grid item xs={12}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
@@ -188,18 +180,14 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
             <Typography variant="subtitle2">Размеры</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <FormGroup row sx={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <FormGroup row>
                   {[
                     ...new Map(sizesList.map((size) => [size.size, size])).values(),
                   ]
-                    .filter((size) => !String(size.size).includes("-")) // Исключаем размеры типа "40-41"
+                    .filter((size) => !String(size.size).includes("-"))
                     .map((size) => (
                       <FormControlLabel
-                        key={size.size_id} // Уникальный ID
+                        key={size.size_id}
                         control={
                           <Checkbox
                             checked={formData.sizes.includes(size.size)}
@@ -211,14 +199,9 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
                     ))}
                 </FormGroup>
               </Grid>
-              {/* Ряд 2: Размеры 40-41, 46-47 и т.д. */}
               <Typography variant="subtitle2">Двойные размеры</Typography>
               <Grid item xs={12}>
-                <FormGroup row sx={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
+                <FormGroup row>
                   {sizesList
                     .filter((size) => size.size.includes("-"))
                     .map((size) => (
@@ -235,14 +218,13 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
                     ))}
                 </FormGroup>
               </Grid>
-              {/* Ряд 3: Инпут для нового размера */}
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <TextField
                   name="customSize"
                   label="Создать новый размер"
                   fullWidth
                   margin="normal"
-                  size="small" // Меньший размер инпута
+                  size="small"
                   onChange={(e) => {
                     const newSize = e.target.value;
                     if (!formData.sizes.includes(newSize)) {
@@ -250,11 +232,11 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
                     }
                   }}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
 
-          {/* Блок 4: Категория, пол и цвет */}
+          {/* Дополнительные поля */}
           <Grid item xs={12}>
             <Typography variant="subtitle3">Дополнительно</Typography>
             <Grid container spacing={2}>
@@ -291,13 +273,13 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
             </Grid>
           </Grid>
 
-          {/* Блок 5: Кнопки получение данных по api */}
-          <Grid item xs={12} className="container-full-width">
-            <Typography variant="subtitle4">Получить данные по api</Typography>            
-            <EnhancedTableToolbar/>
+          {/* API Toolbar */}
+          <Grid item xs={12}>
+            <Typography variant="subtitle4">Получить данные по API</Typography>
+            <EnhancedTableToolbar />
           </Grid>
 
-          {/* Блок 6: Кнопки Сохранить и Отмена */}
+          {/* Кнопки управления */}
           <Grid item xs={12}>
             <Grid container justifyContent="flex-end" spacing={2}>
               <Grid item>
@@ -311,7 +293,7 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
             </Grid>
           </Grid>
         </Grid>
-      </DialogContent>
-    </Dialog>
   );
 };
+
+export default CreateModel;

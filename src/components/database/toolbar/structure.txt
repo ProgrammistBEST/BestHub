@@ -1,0 +1,19 @@
+src/
+├── components/            # Переиспользуемые UI-компоненты
+├── app/                   # Корневой модуль приложения
+│   ├── layouts/           # Глобальные макеты (Layout)
+│   ├── pages/             # Глобальные макеты (Layout)
+│   └── App.tsx            # Главный компонент
+├── features/              # Фичи (Bounded Contexts)
+│   ├── blog-posts/
+│   └── categories/
+├── routes/                # Конфигурация маршрутов
+├── contexts/              # Контексты (например, цветовая тема)
+├── providers/             # Провайдеры (Auth, Data, Devtools)
+├── routes/                # Маршруты приложения
+├── hooks/                 # Кастомные хуки
+├── services/              # API-запросы и бизнес-логика
+├── store/                 # Redux-состояние (если используется)
+├── interfaces/            # TypeScript-типы
+├── utils/                 # Вспомогательные функции
+└── assets/                # Изображения, стили

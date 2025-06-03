@@ -14,7 +14,7 @@ import {
 import React, { useState } from "react";
 import Users from "@components/users/users";
 import "./style.css";
-import Database from "../../components/database/database";
+import Database from "../../components/database/App";
 import DeviceInventoryManager from "@components/deviceInventoryManager";
 
 interface TabPanelProps {

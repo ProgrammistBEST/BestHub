@@ -8,18 +8,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Toolbar,
-  Typography,
   TextField,
   Button,
   TablePagination,
-  Dialog,
-  DialogContent,
-  DialogTitle,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import axios from 'axios';
-import { AddModelModal } from './addModel/addModels';
+import { AddModelModal } from './modalModel/AddModelModal';
 
 // Получение данных моделей
 const fetchModels = async () => {
@@ -167,7 +162,7 @@ export default function ModelTable() {
           autoComplete="off"
         />
         <Button onClick={() => { setModalMode("add"); setIsModalOpen(true); }}>
-          Добавить модель
+          Управление моделями
         </Button>
         <Button onClick={() => { setModalMode("delete"); setIsModalOpen(true); }}>
           Удалить модель
