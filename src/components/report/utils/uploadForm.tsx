@@ -25,12 +25,16 @@ const UploadForm = ({ onUploadSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    let summForFetch = (Number(summForTax1) + Number(summForTax2)) * 0.07;
     const formData = new FormData();
     formData.append("brand", brand);
     formData.append("datePeriod", datePeriod);
-    // formData.append("summForTax1", summForTax1);
-    // formData.append("summForTax2", summForTax2);
+    formData.append(
+      "summForTax",
+      summForFetch.toLocaleString("ru-RU").toString()
+    );
 
+    console.log(formData);
     if (file) formData.append("file", file);
 
     try {

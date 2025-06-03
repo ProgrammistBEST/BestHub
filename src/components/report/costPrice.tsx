@@ -267,7 +267,9 @@ export default function CostPriceList() {
             ))}
           <div className="boxDataPenalty">
             <h3 className="keyDataPenalty">Налог</h3>
-            <p className="titleDataPenalty">Всего: 123 200 руб.</p>
+            <p className="titleDataPenalty">
+              Всего: {reportData?.summForTax} руб.
+            </p>
           </div>
         </Box>
       </TableContainer>
