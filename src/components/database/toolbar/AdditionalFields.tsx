@@ -36,6 +36,16 @@ const AdditionalFields = ({ formData, handleChange }) => {
             margin="normal"
           />
         </Grid>
+        <Grid item xs={4}>
+          <TextField
+            name="compound"
+            label="Состав"
+            value={formData.compound}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+        </Grid>
       </Grid>
     </>
   );

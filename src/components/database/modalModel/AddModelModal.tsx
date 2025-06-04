@@ -10,6 +10,7 @@ import {
 import CreateModel from "../toolbar/CreateModel";
 import axios from "axios";
 import ArticleManagementTab from "../toolbar/ArticleManagementTab";
+import ApiSyncTab from "../toolbar/ApiSyncTab";
 
 export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -55,9 +56,10 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
         centered
       >
         <Tab label="Создать модель" />
-        <Tab label="Работа с артикулами" />
+        <Tab label="Работа с внешними артикулами" />
+        <Tab label="Работа с API" />
       </Tabs>
-      
+            
       <DialogContent sx={{ minHeight: '400px' }}>
         {activeTab === 0 && (
           <CreateModel 
@@ -72,6 +74,9 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
             brandsList={brandsList} 
             sizesList={sizesList} 
           />
+        )}
+        {activeTab === 2 && (
+          <ApiSyncTab brandsList={brandsList} />
         )}
       </DialogContent>
     </Dialog>

@@ -9,13 +9,15 @@ const CreateModel = ({ isOpen, onClose, onAdd }) => {
     brand: "",
     platform: "BestHub",
     article: "",
+    article_association: "",
     sku: "",
-    sizes: [],
-    pairs: [],
+    sizes: {},
     category: "",
     gender: "",
     color: "",
+    compound: "",
   });
+
 
   const [sizesList, setSizesList] = useState([]);
   const [brandsList, setBrandsList] = useState([]);
@@ -31,8 +33,6 @@ const CreateModel = ({ isOpen, onClose, onAdd }) => {
       try {
         const sizes = await fetchSizes();
         const brands = await fetchBrands();
-        console.log("Загруженные размеры:", sizes);
-        console.log("Загруженные бренды:", brands);
         setSizesList(sizes);
         setBrandsList(brands);
       } catch (error) {
@@ -47,11 +47,45 @@ const CreateModel = ({ isOpen, onClose, onAdd }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSkuChange = (size, sku) => {
+    setFormData((prev) => ({
+      ...prev,
+      sizes: {
+        ...prev.sizes,
+        [size]: {
+          ...prev.sizes[size],
+          sku,
+        },
+      },
+    }));
+  };
+
+  const handlePairsChange = (size, pairs) => {
+    setFormData((prev) => ({
+      ...prev,
+      sizes: {
+        ...prev.sizes,
+        [size]: {
+          ...prev.sizes[size],
+          pairs,
+        },
+      },
+    }));
+  };
+
   const handleSizeChange = (size) => {
-    const updatedSizes = formData.sizes.includes(size)
-      ? formData.sizes.filter((s) => s !== size)
-      : [...formData.sizes, size];
-    setFormData({ ...formData, sizes: updatedSizes });
+    setFormData((prev) => ({
+      ...prev,
+      sizes: {
+        ...prev.sizes,
+        [size]: {
+          ...prev.sizes[size],
+          selected: !prev.sizes[size]?.selected,
+          pairs: prev.sizes[size]?.pairs || "",
+          sku: prev.sizes[size]?.sku || "",
+        },
+      },
+    }));
   };
 
   const handleSubmit = async () => {
@@ -64,36 +98,41 @@ const CreateModel = ({ isOpen, onClose, onAdd }) => {
       category,
       gender,
       color,
+      compound,
     } = formData;
 
-    // Проверка обязательных полей
-    if (!brand || !platform || !article || sizes.length === 0) {
+    // Фильтруем только выбранные размеры
+    const selectedSizeEntries = Object.entries(sizes).filter(
+      ([, value]) => value.selected
+    );
+
+    if (!brand || !platform || !article || selectedSizeEntries.length === 0) {
       alert("Пожалуйста, заполните все обязательные поля: бренд, платформа, артикул, размер.");
       return;
     }
 
     try {
-      // Создаём массив запросов — по одному на каждый размер
-      const requests = sizes.map((size) => {
+      const requests = selectedSizeEntries.map(([size, value]) => {
         const payload = {
           brand,
           platform,
           article,
           size,
+          sku: value.sku || "",
+          pair: value.pairs || 0,
           article_association: platform !== "BestHub" ? article_association || "" : null,
           category,
           gender,
           color,
+          compound,
         };
-
         return createModel(payload);
       });
 
-      // Отправляем все запросы параллельно
       await Promise.all(requests);
 
       alert("Модели успешно созданы!");
-      onAdd(); // если нужно обновить список
+      onAdd();
     } catch (error) {
       console.error("Ошибка при создании модели:", error);
       alert("Ошибка при отправке данных. Проверьте введённые значения.");
@@ -155,18 +194,6 @@ const CreateModel = ({ isOpen, onClose, onAdd }) => {
                   variant="outlined"
                 />
               </Grid>
-              {formData.platform !== "BestHub" && (
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    label="Артикул на платформе"
-                    name="article_association"
-                    value={formData.article_association}
-                    onChange={handleChange}
-                    variant="outlined"
-                  />
-                </Grid>
-              )}
             </Grid>
           </Grid>
 
@@ -176,6 +203,9 @@ const CreateModel = ({ isOpen, onClose, onAdd }) => {
               sizesList={sizesList}
               selectedSizes={formData.sizes}
               onSizeChange={handleSizeChange}
+              onPairsChange={handlePairsChange} // ← добавь это
+              onSkuChange={handleSkuChange}     // ← и это
+              platform={formData.platform}
             />
           </Grid>
 
