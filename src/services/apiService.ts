@@ -79,7 +79,7 @@ export const fetchBrands = async () => {
 
 export const createModel = async (modelData) => {
   try {
-    const response = await axios.post("/api/models", modelData);
+    const response = await axios.post("http://localhost:8001/api/models", modelData);
     return response.data;
   } catch (error) {
     console.error("Ошибка при создании модели:", error);

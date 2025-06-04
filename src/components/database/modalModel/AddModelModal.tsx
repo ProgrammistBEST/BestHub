@@ -7,7 +7,7 @@ import {
   Tab,
   Box
 } from "@mui/material";
-import CreateModelContent from "../toolbar/CreateModel";
+import CreateModel from "../toolbar/CreateModel";
 import axios from "axios";
 import ArticleManagementTab from "../toolbar/ArticleManagementTab";
 
@@ -60,7 +60,7 @@ export const AddModelModal = ({ isOpen, onClose, onAdd }) => {
       
       <DialogContent sx={{ minHeight: '400px' }}>
         {activeTab === 0 && (
-          <CreateModelContent 
+          <CreateModel 
             onAdd={onAdd}
             sizesList={sizesList}
             brandsList={brandsList}
