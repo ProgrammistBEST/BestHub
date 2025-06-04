@@ -1,30 +1,39 @@
 import React from "react";
-import { Table, TableBody, TableCell, TableHead, TableRow, IconButton } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  IconButton,
+  CircularProgress
+} from "@mui/material";
 import { EditOutlined, DeleteOutline } from "@mui/icons-material";
-import CircularProgress from "@mui/material/CircularProgress";
 
-const ArticleTable = ({ articles, loading, onEdit, onDelete }) => {
+const ExternalArticleTable = ({ articles, loading, onEdit, onDelete }) => {
   return (
     <Table>
       <TableHead>
         <TableRow>
           <TableCell>Артикул</TableCell>
-          <TableCell>Ассоциация</TableCell>
+          <TableCell>Внешний артикул</TableCell>
+          <TableCell>Платформа</TableCell>
           <TableCell align="right">Действия</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {loading ? (
           <TableRow>
-            <TableCell colSpan={3} align="center">
+            <TableCell colSpan={4} align="center">
               <CircularProgress />
             </TableCell>
           </TableRow>
         ) : articles.length > 0 ? (
           articles.map((article) => (
-            <TableRow key={article.article_id}>
-              <TableCell>{article.article}</TableCell>
-              <TableCell>{article.article_association}</TableCell>
+            <TableRow key={article.external_article_id}>
+              <TableCell>{article.article || "—"}</TableCell>
+              <TableCell>{article.external_article || "—"}</TableCell>
+              <TableCell>{article.platform || "—"}</TableCell>
               <TableCell align="right">
                 <IconButton color="primary" onClick={() => onEdit(article)}>
                   <EditOutlined />
@@ -37,7 +46,7 @@ const ArticleTable = ({ articles, loading, onEdit, onDelete }) => {
           ))
         ) : (
           <TableRow>
-            <TableCell colSpan={3} align="center">
+            <TableCell colSpan={4} align="center">
               Нет данных
             </TableCell>
           </TableRow>
@@ -47,4 +56,4 @@ const ArticleTable = ({ articles, loading, onEdit, onDelete }) => {
   );
 };
 
-export default ArticleTable;
+export default ExternalArticleTable;

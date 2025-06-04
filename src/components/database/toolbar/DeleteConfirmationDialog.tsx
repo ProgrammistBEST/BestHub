@@ -1,21 +1,21 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, Button, Box } from "@mui/material";
+import {
+  Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography
+} from "@mui/material";
 
 const DeleteConfirmationDialog = ({ open, onClose, onDelete, article }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Подтверждение удаления</DialogTitle>
+      <DialogTitle>Подтвердите удаление</DialogTitle>
       <DialogContent>
-        Вы действительно хотите удалить артикул "{article?.article}"?
+        <Typography>
+          Вы уверены, что хотите удалить внешний артикул <b>{article?.external_article}</b>?
+        </Typography>
       </DialogContent>
-      <Box sx={{ display: "flex", justifyContent: "space-between", p: 2 }}>
-        <Button onClick={onClose} color="secondary">
-          Отмена
-        </Button>
-        <Button onClick={onDelete} variant="contained" color="error">
-          Удалить
-        </Button>
-      </Box>
+      <DialogActions>
+        <Button onClick={onClose}>Отмена</Button>
+        <Button onClick={onDelete} color="error" variant="contained">Удалить</Button>
+      </DialogActions>
     </Dialog>
   );
 };

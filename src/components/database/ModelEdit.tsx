@@ -74,6 +74,12 @@ const ModelEdit: React.FC<ModelEditProps> = ({
             onChange={(value) => setEditedData({ ...editedData, color: value })}
           />
         </StyledTableCell>
+        <StyledTableCell align="center">
+          <EditableField
+            value={editedData.compound || row.compound}
+            onChange={(value) => setEditedData({ ...editedData, compound: value })}
+          />
+        </StyledTableCell>
         <StyledTableCell align="center">{row.platform}</StyledTableCell>
         <StyledTableCell align="center">{row.updated_at}</StyledTableCell>
         <StyledTableCell align="center">
@@ -95,6 +101,7 @@ const ModelEdit: React.FC<ModelEditProps> = ({
       <StyledTableCell align="center">{row.category}</StyledTableCell>
       <StyledTableCell align="center">{row.gender}</StyledTableCell>
       <StyledTableCell align="center">{row.color}</StyledTableCell>
+      <StyledTableCell align="center">{row.compound}</StyledTableCell>
       <StyledTableCell align="center">{row.platform}</StyledTableCell>
       <StyledTableCell align="center">{row.updated_at}</StyledTableCell>
       <StyledTableCell align="center">

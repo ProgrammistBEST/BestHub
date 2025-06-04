@@ -86,3 +86,31 @@ export const createModel = async (modelData) => {
     throw error;
   }
 };
+
+export const fetchExternalArticles = async () => {
+  const res = await axios.get("http://localhost:8001/api/external-articles");
+  return res.data;
+};
+
+export const createExternalArticle = async (data) => {
+  const res = await axios.post("http://localhost:8001/api/external-articles", data);
+  return res.data;
+};
+
+export const updateExternalArticle = async (id, data) => {
+  const res = await axios.put(`http://localhost:8001/api/external-articles/${id}`, data);
+  return res.data;
+};
+
+export const deleteExternalArticle = async (id) => {
+  const res = await axios.delete(`http://localhost:8001/api/external-articles/${id}`);
+  return res.data;
+};
+
+export const fetchPlatforms = async () => {
+  const response = await fetch("http://localhost:8001/api/platforms");
+  if (!response.ok) {
+    throw new Error("Ошибка при загрузке платформ");
+  }
+  return response.json();
+};

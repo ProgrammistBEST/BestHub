@@ -1,23 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { Box, Paper, Button, TablePagination, Snackbar, Alert } from "@mui/material";
+import {
+  Box, Paper, Button, TablePagination, Snackbar, Alert
+} from "@mui/material";
 import { AddCircleOutline } from "@mui/icons-material";
-import { fetchArticles, createArticle, updateArticle, deleteArticle } from "../../../services/apiService";
+import {
+  fetchExternalArticles,
+  createExternalArticle,
+  updateExternalArticle,
+  deleteExternalArticle,
+  fetchPlatforms,
+  fetchArticles,
+  createArticle,
+} from "../../../services/apiService";
 import ArticleTable from "./ArticleTable";
-import ArticleModal from "./ArticleModal";
+import ExternalArticleModal from "./ExternalArticleModal";
 import DeleteConfirmationDialog from "./DeleteConfirmationDialog";
 
 const ArticleManagementTab = () => {
   const [articles, setArticles] = useState([]);
+  const [articleOptions, setArticleOptions] = useState([]);
+  const [platforms, setPlatforms] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [currentArticle, setCurrentArticle] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [snackbar, setSnackbar] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isAddingStandaloneArticle, setIsAddingStandaloneArticle] = useState(false);
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [total, setTotal] = useState(0);
-  const [formState, setFormState] = useState({ article: "", association: "" });
+
+  const [formState, setFormState] = useState({
+    external_article: "",
+    article_id: "",
+    platform_id: ""
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadInitialData = async () => {
+      try {
+        const [platformData, articleData] = await Promise.all([
+          fetchPlatforms(),
+          fetchArticles()
+        ]);
+        if (isMounted) {
+          setPlatforms(platformData);
+          setArticleOptions(articleData);
+        }
+      } catch (error) {
+        if (isMounted) setSnackbar({ message: "Ошибка загрузки справочников", severity: "error" });
+      }
+    };
+    loadInitialData();
+    return () => { isMounted = false };
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -26,11 +66,11 @@ const ArticleManagementTab = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const allArticles = await fetchArticles();
+      const data = await fetchExternalArticles(); // уже возвращает нужные поля
       const startIndex = page * rowsPerPage;
       const endIndex = startIndex + rowsPerPage;
-      setArticles(allArticles.slice(startIndex, endIndex));
-      setTotal(allArticles.length);
+      setArticles(data.slice(startIndex, endIndex));
+      setTotal(data.length);
     } catch (error) {
       setSnackbar({ message: "Ошибка загрузки данных", severity: "error" });
     } finally {
@@ -41,22 +81,33 @@ const ArticleManagementTab = () => {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      if (!formState.article.trim()) {
-        setSnackbar({ message: "Поле 'Артикул' не может быть пустым", severity: "error" });
+      const { external_article, article_id, platform_id } = formState;
+
+      if (!external_article.trim() || !article_id || !platform_id) {
+        setSnackbar({ message: "Все поля обязательны", severity: "error" });
         return;
       }
 
+      const payload = {
+        external_article,
+        article_id: Number(article_id),
+        platform_id: Number(platform_id)
+      };
+
       if (currentArticle) {
-        await updateArticle(currentArticle.article_id, formState);
+        await updateExternalArticle(currentArticle.external_article_id, payload);
       } else {
-        await createArticle(formState);
+        await createExternalArticle(payload);
       }
 
       fetchData();
       setOpenModal(false);
+      setCurrentArticle(null);
+      setFormState({ external_article: "", article_id: "", platform_id: "" });
       setSnackbar({ message: "Успешно сохранено", severity: "success" });
     } catch (error) {
-      setSnackbar({ message: error.message || "Ошибка сохранения", severity: "error" });
+      const message = error?.response?.data?.error || "Ошибка при сохранении";
+      setSnackbar({ message, severity: "error" });
     } finally {
       setIsSaving(false);
     }
@@ -64,7 +115,7 @@ const ArticleManagementTab = () => {
 
   const handleDelete = async () => {
     try {
-      await deleteArticle(deleteConfirm.article_id);
+      await deleteExternalArticle(deleteConfirm.external_article_id);
       fetchData();
       setDeleteConfirm(null);
       setSnackbar({ message: "Успешно удалено", severity: "success" });
@@ -73,13 +124,58 @@ const ArticleManagementTab = () => {
     }
   };
 
+  const handleCreateAndAttachArticle = async (name) => {
+    try {
+      setIsSaving(true);
+
+      // Шаг 1: Создаем артикул
+      const createdArticle = await createArticle({ article: name });
+
+      // Шаг 2: Создаем внешний артикул
+      const payload = {
+        external_article: name,
+        article_id: createdArticle.article_id,
+        platform_id: platforms.find(p => p.platform === "BestHub")?.platform_id,
+      };
+
+      await createExternalArticle(payload);
+
+      setSnackbar({ message: "Артикул и внешний артикул успешно добавлены", severity: "success" });
+      setOpenModal(false);
+      setFormState({ external_article: "", article_id: "", platform_id: "" });
+      fetchData(); // обновить таблицу
+    } catch (error) {
+      const message = error?.response?.data?.error || "Ошибка при добавлении артикула";
+      setSnackbar({ message, severity: "error" });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <Box>
       <Button
         variant="contained"
         startIcon={<AddCircleOutline />}
-        onClick={() => setOpenModal(true)}
-        sx={{ mb: 2 }}
+        onClick={() => {
+          setOpenModal(true);
+          setCurrentArticle(null);
+          setFormState({ external_article: "", article_id: "", platform_id: "" });
+          setIsAddingStandaloneArticle(false); // добавить этот флаг
+        }}
+      >
+        Добавить внешний артикул
+      </Button>
+
+      <Button
+        variant="outlined"
+        startIcon={<AddCircleOutline />}
+        onClick={() => {
+          setOpenModal(true);
+          setCurrentArticle(null);
+          setFormState({ external_article: "", article_id: "", platform_id: "" });
+          setIsAddingStandaloneArticle(true); // добавить этот флаг
+        }}
       >
         Добавить артикул
       </Button>
@@ -90,11 +186,16 @@ const ArticleManagementTab = () => {
           loading={loading}
           onEdit={(article) => {
             setCurrentArticle(article);
-            setFormState({ article: article.article, association: article.article_association });
+            setFormState({
+              external_article: article.external_article,
+              article_id: article.article_id,
+              platform_id: article.platform_id
+            });
             setOpenModal(true);
           }}
           onDelete={(article) => setDeleteConfirm(article)}
         />
+
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -109,18 +210,22 @@ const ArticleManagementTab = () => {
         />
       </Paper>
 
-      <ArticleModal
+      <ExternalArticleModal
         open={openModal}
         onClose={() => {
           setOpenModal(false);
           setCurrentArticle(null);
-          setFormState({ article: "", association: "" });
+          setFormState({ external_article: "", article_id: "", platform_id: "" });
         }}
         onSave={handleSave}
         isSaving={isSaving}
         formState={formState}
         setFormState={setFormState}
-        title={currentArticle ? "Редактировать" : "Добавить"}
+        title={currentArticle ? "Редактировать внешний артикул" : "Добавить внешний артикул"}
+        platformOptions={platforms}
+        articleOptions={articleOptions}
+        isAddingStandaloneArticle={isAddingStandaloneArticle}
+        onCreateArticle={handleCreateAndAttachArticle}
       />
 
       <DeleteConfirmationDialog

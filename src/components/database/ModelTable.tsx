@@ -1,6 +1,6 @@
 // ModelTable.js
 import React, { useState } from "react";
-import { Box, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Button } from "@mui/material";
+import { Box, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, TextField, Typography, Button } from "@mui/material";
 import ModelSearch from "../search/ModelSearch";
 import ModelEdit from "./ModelEdit";
 import ModelPagination from "../pagination/ModelPagination";
@@ -38,8 +38,26 @@ const ModelTable = ({
   onPageChange,
   onRowsPerPageChange,
 }) => {
+  const [filterValues, setFilterValues] = useState({
+    sku: "",
+    brand: "",
+    article: "",
+    size: "",
+    pair: "",
+    category: "",
+    gender: "",
+    color: "",
+    compound: "",
+    platform: "",
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("add");
+  const filteredData = data.filter((row) =>
+    Object.entries(filterValues).every(([key, value]) => {
+      if (!value) return true;
+      return row[key]?.toString().toLowerCase().includes(value.toLowerCase());
+    })
+  );
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -48,34 +66,113 @@ const ModelTable = ({
         <Button onClick={() => { setModalMode("add"); setIsModalOpen(true); }}>
           Управление моделями
         </Button>
-        {/* Кнопка для удаления модели */}
-        <Button onClick={() => { setModalMode("delete"); setIsModalOpen(true); }}>
-          Удалить модель
-        </Button>
-
-        {/* Панель поиска */}
-        <ModelSearch onSearch={onSearch} />
 
         {/* Таблица */}
         <TableContainer>
           <Table aria-labelledby="tableTitle">
             <TableHead>
               <TableRow>
-                <StyledTableCell>SKU</StyledTableCell>
-                <StyledTableCell align="center">Бренд</StyledTableCell>
-                <StyledTableCell align="center">Артикул</StyledTableCell>
-                <StyledTableCell align="center">Размер</StyledTableCell>
-                <StyledTableCell align="center">Пары</StyledTableCell>
-                <StyledTableCell align="center">Категория</StyledTableCell>
-                <StyledTableCell align="center">Пол</StyledTableCell>
-                <StyledTableCell align="center">Цвет</StyledTableCell>
-                <StyledTableCell align="center">Платформа</StyledTableCell>
-                <StyledTableCell align="center">Дата изменения</StyledTableCell>
-                <StyledTableCell align="center">Редактирование</StyledTableCell>
+                <StyledTableCell>
+                  <TextField
+                    label="SKU"
+                    variant="standard"
+                    value={filterValues.sku}
+                    onChange={(e) => setFilterValues({ ...filterValues, sku: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Бренд"
+                    variant="standard"
+                    value={filterValues.brand}
+                    onChange={(e) => setFilterValues({ ...filterValues, brand: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Артикул"
+                    variant="standard"
+                    value={filterValues.article}
+                    onChange={(e) => setFilterValues({ ...filterValues, article: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Размер"
+                    variant="standard"
+                    value={filterValues.size}
+                    onChange={(e) => setFilterValues({ ...filterValues, size: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Пары"
+                    variant="standard"
+                    value={filterValues.pair}
+                    onChange={(e) => setFilterValues({ ...filterValues, pair: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Категория"
+                    variant="standard"
+                    value={filterValues.category}
+                    onChange={(e) => setFilterValues({ ...filterValues, category: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Пол"
+                    variant="standard"
+                    value={filterValues.gender}
+                    onChange={(e) => setFilterValues({ ...filterValues, gender: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Цвет"
+                    variant="standard"
+                    value={filterValues.color}
+                    onChange={(e) => setFilterValues({ ...filterValues, color: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Состав"
+                    variant="standard"
+                    value={filterValues.compound}
+                    onChange={(e) => setFilterValues({ ...filterValues, compound: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <TextField
+                    label="Платформа"
+                    variant="standard"
+                    value={filterValues.platform}
+                    onChange={(e) => setFilterValues({ ...filterValues, platform: e.target.value })}
+                    fullWidth
+                  />
+                </StyledTableCell>
+                {/* Эти два не фильтруются */}
+                <StyledTableCell align="center">
+                  <Typography variant="body2" fontWeight="bold">Дата изменения</Typography>
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <Typography variant="body2" fontWeight="bold">Редактирование</Typography>
+                </StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((row) => (
+              {filteredData.map((row) => (
                 <StyledTableRow key={row.model_id}>
                   <ModelEdit
                     row={row}
