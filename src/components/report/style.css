@@ -36,6 +36,10 @@
   margin: 0;
 }
 
+.allSumTypeLogisticPenalty {
+  font-weight: 900;
+}
+
 @media print {
   body * {
     visibility: hidden;

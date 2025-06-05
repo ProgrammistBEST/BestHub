@@ -145,7 +145,7 @@ const UploadForm = ({ onUploadSuccess }) => {
 
       {/* Налог 1 */}
       <TextField
-        label="Общая сумма отчёта"
+        label="Продажа основной отчёт"
         variant="outlined"
         value={summForTax1}
         onChange={handleInputChange1}
@@ -156,7 +156,7 @@ const UploadForm = ({ onUploadSuccess }) => {
 
       {/* Налог 2 */}
       <TextField
-        label="Дополнительная сумма отчёта"
+        label="Продажа дополнительный отчёт"
         variant="outlined"
         value={summForTax2}
         onChange={handleInputChange2}

@@ -123,28 +123,28 @@ export default function CostPriceList() {
                 align="center"
                 onClick={() => requestSort("soldUnits")}
               >
-                Прод. шт.
+                Продано шт.
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold" }}
                 align="center"
                 onClick={() => requestSort("costOfSales")}
               >
-                Себест. прод.
+                Себестоимость проданного
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold" }}
                 align="center"
                 onClick={() => requestSort("returnsUnits")}
               >
-                Возвр. шт.
+                Возвраты шт.
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold" }}
                 align="center"
                 onClick={() => requestSort("costOfReturns")}
               >
-                Себест. возвр.
+                Себестоимость возвратов
               </TableCell>
               <TableCell
                 sx={{ fontWeight: "bold" }}
@@ -246,15 +246,29 @@ export default function CostPriceList() {
             p: 2,
           }}
         >
+          <div className="boxDataPenalty">
+            <p className="keyDataPenalty">
+              Налог{" "}
+              <span className="allSumTypeLogisticPenalty">
+                {reportData?.summForTax} руб.
+              </span>
+            </p>
+          </div>
           {Object.entries(reportData?.additional || {})
             .filter(([_, data]) => data.sumTypeLogisticPenalty > 0)
             .map(([penaltyKey, data]) => (
               <div key={penaltyKey} className="boxDataPenalty">
-                <h3 className="keyDataPenalty">{penaltyKey}</h3>
-                {/* <p className="countDataPenalty">Кол-во: {data.count}</p> */}
-                <p className="titleDataPenalty">
-                  Всего: {data.sumTypeLogisticPenalty}
+                <p className="keyDataPenalty">
+                  {penaltyKey}:
+                  <span className="allSumTypeLogisticPenalty">
+                    {" "}
+                    {data.sumTypeLogisticPenalty}
+                  </span>
                 </p>
+                {/* <p className="countDataPenalty">Кол-во: {data.count}</p> */}
+                {/* <h3 className="titleDataPenalty">
+                  Всего: {data.sumTypeLogisticPenalty}
+                </h3> */}
 
                 {/* <ul>
                 {data.items.map((item, index) => (
@@ -265,12 +279,6 @@ export default function CostPriceList() {
               </ul> */}
               </div>
             ))}
-          <div className="boxDataPenalty">
-            <h3 className="keyDataPenalty">Налог</h3>
-            <p className="titleDataPenalty">
-              Всего: {reportData?.summForTax} руб.
-            </p>
-          </div>
         </Box>
       </TableContainer>
       <Stack
