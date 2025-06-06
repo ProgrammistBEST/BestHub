@@ -98,9 +98,9 @@ const ApiList = () => {
 
   // Функция для расчета цвета прогресса
   const getProgressColor = (progress: number): string => {
-    if (progress > 80) return "#4caf50"; // Зеленый
-    if (progress > 50) return "#ff9800"; // Оранжевый
-    return "#f44336"; // Красный
+    if (progress > 80) return "#4caf50";
+    if (progress > 50) return "#ff9800";
+    return "#f44336";
   };
 
   const filteredApis =

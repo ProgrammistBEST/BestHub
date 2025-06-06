@@ -59,20 +59,17 @@ const UploadForm = ({ onUploadSuccess }) => {
 
   const handleInputChange1 = (e) => {
     const rawValue = e.target.value; // Исходное значение из поля ввода
-    const formattedValue = formatNumber(rawValue); // Форматированное значение
 
     // Обновляем состояние
-    setSummForTax1(formattedValue);
+    setSummForTax1(rawValue);
   };
 
   const handleInputChange2 = (e) => {
     const rawValue = e.target.value; // Исходное значение из поля ввода
-    const formattedValue = formatNumber(rawValue); // Форматированное значение
 
     // Обновляем состояние
-    setSummForTax2(formattedValue);
+    setSummForTax2(rawValue);
   };
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };

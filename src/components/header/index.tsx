@@ -266,13 +266,13 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
               }}
             >
               <ThemeSwitcher />
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={handleEditProfile}
               >
                 Редактировать
-              </Button>
+              </Button> */}
               <Button
                 variant="outlined"
                 color="error"

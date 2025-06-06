@@ -246,7 +246,12 @@ export default function CostPriceList() {
             p: 2,
           }}
         >
-          <div className="boxDataPenalty">
+          <div
+            className="boxDataPenalty"
+            style={{
+              textAlign: "end",
+            }}
+          >
             <p className="keyDataPenalty">
               Налог{" "}
               <span className="allSumTypeLogisticPenalty">
@@ -262,7 +267,7 @@ export default function CostPriceList() {
                   {penaltyKey}:
                   <span className="allSumTypeLogisticPenalty">
                     {" "}
-                    {data.sumTypeLogisticPenalty}
+                    {data.sumTypeLogisticPenalty.toFixed(2)} руб.
                   </span>
                 </p>
                 {/* <p className="countDataPenalty">Кол-во: {data.count}</p> */}

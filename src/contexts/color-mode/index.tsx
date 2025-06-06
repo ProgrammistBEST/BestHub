@@ -66,7 +66,7 @@ const TealTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#009688", // Бирюзовый
+      main: "#00c3ff", // Бирюзовый
     },
     secondary: {
       main: "#004D40", // Темно-бирюзовый
@@ -82,14 +82,14 @@ const RedTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#FF0000", // Красный
+      main: "#FF0000",
     },
     secondary: {
-      main: "#8B0000", // Темно-красный
+      main: "#8B0000",
     },
     background: {
-      default: "#FFE4E1", // Светло-красный фон
-      paper: "#FFC0CB",
+      default: "#FFF0F0",
+      paper: "#FFE4E1",
     },
   },
 });
@@ -187,6 +187,42 @@ export const ColorModeContextProvider: React.FC<
                 mode: "dark",
                 background: {
                   default: "#121212",
+                  paper: "#1e1e1e",
+                },
+                text: {
+                  primary: "#ffffff",
+                  secondary: "#b0b0b0",
+                },
+              },
+            });
+      case "green":
+        return mode === "light"
+          ? GreenTheme
+          : createTheme({
+              ...GreenTheme,
+              palette: {
+                ...GreenTheme.palette,
+                mode: "dark",
+                background: {
+                  default: "#1e1e1e",
+                  paper: "#1e1e1e",
+                },
+                text: {
+                  primary: "#ffffff",
+                  secondary: "#b0b0b0",
+                },
+              },
+            });
+      case "teal":
+        return mode === "light"
+          ? TealTheme
+          : createTheme({
+              ...TealTheme,
+              palette: {
+                ...TealTheme.palette,
+                mode: "dark",
+                background: {
+                  default: "#1e1e1e",
                   paper: "#1e1e1e",
                 },
                 text: {

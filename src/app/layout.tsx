@@ -129,17 +129,26 @@ export default async function RootLayout({
                   >
                     {children}
                     <RefineKbar />
+                    <Typography
+                      className="BrandsTextAnimation"
+                      sx={{
+                        display: "inline",
+                        position: "sticky",
+                        zIndex: 10000,
+                        bottom: "10px",
+                        left: "49px",
+                        color: "text.primary",
+                        "&::after": {
+                          content: '""',
+                          width: "8px",
+                          height: "20px",
+                          display: "inline-block",
+                          marginLeft: "2px",
+                          backgroundColor: "text.primary",
+                        },
+                      }}
+                    ></Typography>
                   </Refine>
-                  <Typography
-                    className="BrandsTextAnimation"
-                    sx={{
-                      display: "inline",
-                      position: "sticky",
-                      zIndex: 10000,
-                      bottom: "10px",
-                      left: "49px",
-                    }}
-                  ></Typography>
                 </DevtoolsProvider>
               </RefineSnackbarProvider>
             </ColorModeContextProvider>
