@@ -4,7 +4,6 @@ import {
   CircularProgress, MenuItem, IconButton, InputAdornment,
   Autocomplete
 } from "@mui/material";
-import { AddCircleOutline } from "@mui/icons-material";
 
 const ExternalArticleModal = ({
   open,
@@ -21,6 +20,7 @@ const ExternalArticleModal = ({
 }) => {
   const [isCreatingArticle, setIsCreatingArticle] = useState(false);
   const [newArticleName, setNewArticleName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isEditingExternalArticle = !!formState.external_article_id;
 
@@ -34,13 +34,28 @@ const ExternalArticleModal = ({
   const handleAddArticle = async () => {
     const name = newArticleName.trim();
     if (!name) {
-      alert("Название артикула не может быть пустым");
+      setErrorMessage("Название артикула не может быть пустым");
       return;
     }
 
-    await onCreateArticle(name);
-    setNewArticleName("");
-    setIsCreatingArticle(false);
+    try {
+      const result = await onCreateArticle(name);
+
+      // Успех
+      if (result?.message) {
+        setNewArticleName("");
+        setErrorMessage("");
+        setIsCreatingArticle(false);
+      }
+
+      // Ошибка с сервера
+      if (result?.error) {
+        setErrorMessage(result.error);
+      }
+    } catch (err) {
+      setErrorMessage("Произошла ошибка при создании артикула");
+      console.error(err);
+    }
   };
 
   return (
@@ -53,7 +68,12 @@ const ExternalArticleModal = ({
             fullWidth
             margin="dense"
             value={newArticleName}
-            onChange={(e) => setNewArticleName(e.target.value)}
+            onChange={(e) => {
+              setNewArticleName(e.target.value);
+              setErrorMessage("");
+            }}
+            error={!!errorMessage}
+            helperText={errorMessage}
           />
         ) : (
           <>
@@ -116,9 +136,9 @@ const ExternalArticleModal = ({
         <Button
           onClick={() => {
             if (isAddingStandaloneArticle) {
-              handleAddArticle(); // создать новый артикул
+              handleAddArticle();
             } else {
-              onSave(); // сохранить внешний артикул
+              onSave();
             }
           }}
           variant="contained"
