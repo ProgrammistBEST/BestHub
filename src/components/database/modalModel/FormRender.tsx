@@ -78,7 +78,6 @@ export const FormRenderer = () => {
         fullWidth
         margin="normal"
       />
-      {/* Остальные поля */}
       <FormGroup row>
         <FormControlLabel
           control={<Checkbox />}

@@ -131,6 +131,11 @@ const ArticleManagementTab = () => {
       // Шаг 1: Создаем артикул
       const createdArticle = await createArticle({ article: name });
 
+      // Если вернулась ошибка — прерываем
+      if (createdArticle.error) {
+        return { error: createdArticle.error };
+      }
+
       // Шаг 2: Создаем внешний артикул
       const payload = {
         external_article: name,
@@ -143,10 +148,12 @@ const ArticleManagementTab = () => {
       setSnackbar({ message: "Артикул и внешний артикул успешно добавлены", severity: "success" });
       setOpenModal(false);
       setFormState({ external_article: "", article_id: "", platform_id: "" });
-      fetchData(); // обновить таблицу
+      fetchData();
+
+      return { message: "Артикул успешно создан" };
     } catch (error) {
       const message = error?.response?.data?.error || "Ошибка при добавлении артикула";
-      setSnackbar({ message, severity: "error" });
+      return { error: message };
     } finally {
       setIsSaving(false);
     }
@@ -161,7 +168,7 @@ const ArticleManagementTab = () => {
           setOpenModal(true);
           setCurrentArticle(null);
           setFormState({ external_article: "", article_id: "", platform_id: "" });
-          setIsAddingStandaloneArticle(false); // добавить этот флаг
+          setIsAddingStandaloneArticle(false);
         }}
       >
         Добавить внешний артикул
@@ -174,7 +181,7 @@ const ArticleManagementTab = () => {
           setOpenModal(true);
           setCurrentArticle(null);
           setFormState({ external_article: "", article_id: "", platform_id: "" });
-          setIsAddingStandaloneArticle(true); // добавить этот флаг
+          setIsAddingStandaloneArticle(true);
         }}
       >
         Добавить артикул
